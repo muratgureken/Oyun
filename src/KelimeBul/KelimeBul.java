@@ -3,23 +3,23 @@ package KelimeBul;
 import java.util.Scanner;
 
 public class KelimeBul {
-	public KelimeBul(String kelime) {
+	public KelimeBul(String kelime, Scanner scan) {
 		int kelimeBoyutu, ilkBoyut=6, ilkHarfHakki=3, deger, countTahmin=0;
 		float kalanBoyut;
 		float b=3.0f, d=0;
 		String [] Tahmin;
-		Scanner scan = new Scanner(System.in);
 		String [] kelimeBul;
 		String tahminEt, sonuc="YANLIÞ",harfler;
 		
 		kelimeBoyutu = kelime.length();
 		kelimeBul = new String[kelimeBoyutu];
-		Tahmin = new String[kelimeBoyutu];
+		Tahmin = new String[kelimeBoyutu*2];
 		
 		for(int i=0;i<kelimeBoyutu;i++)
 		{
 			kelimeBul[i] = kelime.substring(i, i+1);
-			Tahmin[i] = "X";
+			Tahmin[2*i] = "-";
+			Tahmin[2*i+1] = " ";
 		}
 		
 		deger = ilkHarfHakki;
@@ -32,13 +32,13 @@ public class KelimeBul {
 		}
 				
 		System.out.println("KELÝME BUL OYUNU");
-		for(int i=0;i<kelimeBoyutu;i++)
+		for(int i=0;i<kelimeBoyutu*2;i++)
 		{
 			System.out.print(Tahmin[i]);
 		}
 		System.out.println();
 
-		System.out.println("kelime: "+kelime);
+		/*System.out.println("kelime: "+kelime);*/
 
 		System.out.println(kelimeBoyutu+" harfli kelime için "+deger+" harf seçin");
 		
@@ -50,12 +50,12 @@ public class KelimeBul {
 			{
 				if(harfler.contentEquals(kelimeBul[j]))
 				{
-					Tahmin[j] = harfler;
+					Tahmin[2*j] = harfler;
 				}
 			}
 		}
 		
-		for(int i=0;i<kelimeBoyutu;i++)
+		for(int i=0;i<kelimeBoyutu*2;i++)
 		{
 			System.out.print(Tahmin[i]);
 		}
@@ -74,8 +74,6 @@ public class KelimeBul {
 			}
 		}
 		
-		System.out.println("CEVABINIZ "+sonuc+"! KELÝME="+kelime);
-		
-		scan.close();
+		System.out.println("CEVABINIZ "+sonuc+"! KELÝME="+kelime);	
 	}
 }
