@@ -36,7 +36,7 @@ public class Runner {
 		{
 			System.out.println(sozluk[i]);
 		}*/
-		
+
 		for(int i=0;i<onlineKullanici;i++)
 		{
 			rastgeleSatir = rand.nextInt(count);

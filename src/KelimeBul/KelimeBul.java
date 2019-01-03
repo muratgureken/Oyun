@@ -2,6 +2,8 @@ package KelimeBul;
 
 import java.util.Scanner;
 
+import com.sun.xml.internal.ws.util.StringUtils;
+
 public class KelimeBul {
 	public KelimeBul(String kelime, Scanner scan) {
 		int kelimeBoyutu, ilkBoyut=6, ilkHarfHakki=3, deger, countTahmin=0;
