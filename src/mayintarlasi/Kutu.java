@@ -175,8 +175,9 @@ public class Kutu extends MayinTarlasi implements YardimciIslemler{
 			{
 				KomsuKutular[i].secilenIndis = Komsular[i];
 				//komsu kutunun degerini bulacak fonksiyonlari cagir (mayin olan komsularinin sayisi)
-				//secilenindis=komsular[i];
-				Tarla[Komsular[i]] = "0";
+				//komsularin hicbiri mayin degil
+				
+				Tarla[Komsular[i]] = "0";//en son bu icerik doldurulacak.
 			}
 		}		
 	}
