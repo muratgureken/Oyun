@@ -48,7 +48,7 @@ public class Runner {
 			hamleSayisi++;
 			System.out.println("Oyundan cikmak icin E'ye basin");
 			System.out.println("satir sutun secim/tahmin(0/1)");
-			System.out.println("Hamle Sayisi:"+hamleSayisi+"  Mayýn Sayýsý:"+mayinSayisi);
+			//System.out.println("Hamle Sayisi:"+hamleSayisi+"  Mayýn Sayýsý:"+mayinSayisi);
 			String girdi;
 			girdi = scan.next();
 			if(girdi.contains("E"))
@@ -66,6 +66,7 @@ public class Runner {
 				continue;
 			}
 			sutun = Integer.parseInt(girdi);
+			
 			girdi = scan.next();
 			if(girdi.contains("E"))
 			{
@@ -73,15 +74,41 @@ public class Runner {
 				System.out.println("Gule gule :)");
 				continue;
 			}
+			
+			if((satir*sutun)>=matrisBoyutu)
+			{
+				System.out.println("Olmayan kutu seçtiniz :/");
+				continue;
+			}
+			
 			tahmin = Integer.parseInt(girdi);		
 
 			a.secilenIndis = satir*sutunSayisi+sutun;
-			System.out.println("secilen indis:"+a.secilenIndis);
+			//System.out.println("secilen indis:"+a.secilenIndis);
 			if(a.MayinMi()&&(tahmin==1))
 			{
 				a.Tarla[a.secilenIndis] = "F";
 				a.MatrisCiz(matrisBoyutu, sutunSayisi);
+				a.MayinKontrol[a.secilenIndis] = 1;
 				mayinSayisi--;
+				
+				int count2=0;
+				for(int i=0;i<matrisBoyutu;i++)
+				{
+					if(!a.Tarla[i].contains("x"))
+					{
+						count2++;
+					}
+				}
+
+				System.out.println("Açýlan Kutu:"+count2+"  Toplam:"+matrisBoyutu+
+						"  Hamle Sayýsý:"+hamleSayisi+"  Mayýn Sayýsý:"+mayinSayisi);
+				if(count2==matrisBoyutu)
+				{
+					System.out.println("Tebrikler, oyunu tamamladiniz :)");
+					Devam = false;			
+				}
+				
 				continue;
 			}
 			if(!(a.MayinMi())&&(tahmin==1))
@@ -94,6 +121,7 @@ public class Runner {
 				mayinSayisi--;
 				a.Tarla[a.secilenIndis] = "M";
 				a.MatrisCiz(matrisBoyutu, sutunSayisi);
+				a.MayinKontrol[a.secilenIndis] = 1;
 				if(!ilkTahmin)
 				{
 					Devam = false;
@@ -104,11 +132,11 @@ public class Runner {
 			else
 			{
 				a.KomsulariBul(satirSayisi, sutunSayisi);
-				System.out.println("Komsular");
+				/*System.out.println("Komsular");
 				for(int i=0;i<a.komsuSayisi;i++)
 				{
 					System.out.print(a.Komsular[i]+" ");
-				}
+				}*/
 				System.out.println();
 				a.NoktaDegeri(a.MayinTarlasi);
 				a.TarlayiDoldur(a, a.Tarla, a.MayinTarlasi, a.MayinKontrol, satirSayisi, sutunSayisi, 0);
@@ -120,27 +148,29 @@ public class Runner {
 			int count2=0;
 			for(int i=0;i<matrisBoyutu;i++)
 			{
-				if(a.MayinKontrol[i]==1)
+				if(!a.Tarla[i].contains("x"))
 				{
 					count2++;
 				}
 			}
 
-			if((count2>=(matrisBoyutu-mayinSayisi))&&(mayinSayisi!=0))
+			System.out.println("Açýlan Kutu:"+count2+"  Toplam:"+matrisBoyutu+
+					"  Hamle Sayýsý:"+hamleSayisi+"  Mayýn Sayýsý:"+mayinSayisi);
+			/*if((count2>=(matrisBoyutu-mayinSayisi))&&(mayinSayisi!=0))
 			{
 				System.out.println("Tebrikler, mayinsiz tum kutulari actiniz :)");
 				Devam = false;
 			}
-			/*if(mayinSayisi==0)
-		{
-			System.out.println("Tebrikler, tüm mayýnlarý buldunuz :)");
-			Devam = false;
-		}
-		if(count2==matrisBoyutu)
-		{
-			System.out.println("Tum kutulari actiniz. :)");
-			Devam = false;			
-		}*/
+			if(mayinSayisi==0)
+			{
+				System.out.println("Tebrikler, tüm mayýnlarý buldunuz :)");
+				Devam = false;
+			}*/
+			if(count2==matrisBoyutu)
+			{
+				System.out.println("Tebrikler, oyunu tamamladiniz :)");
+				Devam = false;			
+			}
 			ilkTahmin = false;
 		}
 	}
