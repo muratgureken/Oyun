@@ -8,9 +8,10 @@ public class Runner {
 		Scanner scan;
 		scan = new Scanner(System.in);
 		Kutu a = new Kutu();
-		int satir,sutun,tahmin,mayinSayisi,hamleSayisi=0, satirSayisi, sutunSayisi;
+		int secilenIndis, mayinSayisi,hamleSayisi=0, satirSayisi, sutunSayisi;
 		boolean Devam=true, ilkTahmin=true;
-
+		String tahmin;
+		
 		System.out.println("Zorluk seviyesini seçin: 1:kolay 2:orta 3:zor");
 		int girdi2 = scan.nextInt();
 		switch(girdi2)
@@ -47,7 +48,7 @@ public class Runner {
 		{
 			hamleSayisi++;
 			System.out.println("Oyundan cikmak icin E'ye basin");
-			System.out.println("satir sutun secim/tahmin(0/1)");
+			System.out.println("T yanindaki degeri girerek bir kutu secin. Ardindan T/F secimi yapýn. (Tahmin/Flag) ÖRNEK:61F");
 			//System.out.println("Hamle Sayisi:"+hamleSayisi+"  Mayýn Sayýsý:"+mayinSayisi);
 			String girdi;
 			girdi = scan.next();
@@ -57,37 +58,23 @@ public class Runner {
 				System.out.println("Gule gule :)");
 				continue;
 			}
-			satir = Integer.parseInt(girdi);
-			girdi = scan.next();
-			if(girdi.contains("E"))
-			{
-				Devam=false;
-				System.out.println("Gule gule :)");
-				continue;
-			}
-			sutun = Integer.parseInt(girdi);
 			
-			girdi = scan.next();
-			if(girdi.contains("E"))
-			{
-				Devam=false;
-				System.out.println("Gule gule :)");
-				continue;
-			}
+			secilenIndis = Integer.parseInt(girdi.substring(0, girdi.length()-1));
+			secilenIndis = secilenIndis-1;
 			
-			if((satir*sutun)>=matrisBoyutu)
+			tahmin = girdi.substring(girdi.length()-1,girdi.length());
+
+			if((secilenIndis)>=matrisBoyutu)
 			{
 				System.out.println("Olmayan kutu seçtiniz :/");
 				continue;
 			}
 			
-			tahmin = Integer.parseInt(girdi);		
-
-			a.secilenIndis = satir*sutunSayisi+sutun;
+			a.secilenIndis = secilenIndis;
 			//System.out.println("secilen indis:"+a.secilenIndis);
-			if(a.MayinMi()&&(tahmin==1))
+			if(a.MayinMi()&&(tahmin.contains("F")))
 			{
-				a.Tarla[a.secilenIndis] = "F";
+				a.Tarla[a.secilenIndis] = "FLAG";
 				a.MatrisCiz(matrisBoyutu, sutunSayisi);
 				a.MayinKontrol[a.secilenIndis] = 1;
 				mayinSayisi--;
@@ -95,7 +82,7 @@ public class Runner {
 				int count2=0;
 				for(int i=0;i<matrisBoyutu;i++)
 				{
-					if(!a.Tarla[i].contains("x"))
+					if(!a.Tarla[i].contains("T"))
 					{
 						count2++;
 					}
@@ -111,7 +98,7 @@ public class Runner {
 				
 				continue;
 			}
-			if(!(a.MayinMi())&&(tahmin==1))
+			if(!(a.MayinMi())&&(tahmin.contains("F")))
 			{
 				continue;
 			}
@@ -119,7 +106,7 @@ public class Runner {
 			if(a.MayinMi())
 			{
 				mayinSayisi--;
-				a.Tarla[a.secilenIndis] = "M";
+				a.Tarla[a.secilenIndis] = "BOM";
 				a.MatrisCiz(matrisBoyutu, sutunSayisi);
 				a.MayinKontrol[a.secilenIndis] = 1;
 				if(!ilkTahmin)
@@ -148,7 +135,7 @@ public class Runner {
 			int count2=0;
 			for(int i=0;i<matrisBoyutu;i++)
 			{
-				if(!a.Tarla[i].contains("x"))
+				if(!a.Tarla[i].contains("T"))
 				{
 					count2++;
 				}

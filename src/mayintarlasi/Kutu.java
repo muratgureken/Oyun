@@ -142,7 +142,7 @@ public void MatrisCiz(int matrisBoyutu,int sutunSayisi) {
 			System.out.println();
 			deger2 = deger1;
 		}
-		System.out.print(Tarla[i]+" ");
+		System.out.printf("%6S",Tarla[i]);
 	}
 	System.out.println();
 }
@@ -169,9 +169,12 @@ public void NoktaDegeri(int [] MayinTarlasi) {
 
 @Override
 public void MayinTarlasiOlustur(int matrisBoyutu) {
+	String icerik, sayi;
 	for(int i=0;i<matrisBoyutu;i++)
 	{
-		Tarla[i] = "x";
+		icerik="T";
+		sayi= Integer.toString(i+1);
+		Tarla[i] = icerik.concat(sayi);
 	}
 }
 
