@@ -11,11 +11,11 @@ public int secilenIndis, komsuSayisi, mayinKomsular;
 public void KutuIlklendir(int sayi, int satirSayisi, int sutunSayisi)
 {
 	int matrisBoyutu=satirSayisi*sutunSayisi;
-	
+
 	MayinTarlasi = new int[matrisBoyutu];
 	MayinKontrol = new int[matrisBoyutu];
 	Tarla = new String[matrisBoyutu];
-	
+
 	RastgeleSayiUret(sayi,matrisBoyutu);
 	MatrisIlklendir(matrisBoyutu);
 	MayinlariYerlestir(sayi);
@@ -204,5 +204,19 @@ public void TarlayiDoldur(Kutu a, String [] Tarla, int[] MayinTarlasi, int[] May
 			TarlayiDoldur(komsu, Tarla, MayinTarlasi, MayinKontrol, satirSayisi, sutunSayisi, iterasyon);
 		}
 	}          
+}
+
+@Override
+public void MayinlariGoster(int[] MayinTarlasi, int matrisBoyutu, int sutunSayisi) {
+	// TODO Auto-generated method stub
+	int deger1=0,deger2=0;
+
+	for(int i=0;i<matrisBoyutu;i++)
+	{
+		if(MayinTarlasi[i]==1)
+		{
+			Tarla[i] = "BOM";
+		}
+	}
 }
 }

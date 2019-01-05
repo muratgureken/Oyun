@@ -8,7 +8,7 @@ public class Runner {
 		Scanner scan;
 		scan = new Scanner(System.in);
 		Kutu a = new Kutu();
-		int secilenIndis, mayinSayisi,hamleSayisi=0, satirSayisi, sutunSayisi;
+		int secilenIndis, mayinSayisi,hamleSayisi, satirSayisi, sutunSayisi, flagSayisi,ind2;
 		boolean Devam=true, ilkTahmin=true;
 		String tahmin;
 		
@@ -35,7 +35,9 @@ public class Runner {
 		}
 
 		int matrisBoyutu = satirSayisi*sutunSayisi;
-
+		hamleSayisi = matrisBoyutu - mayinSayisi;
+		flagSayisi = mayinSayisi;
+		
 		a.KutuIlklendir(mayinSayisi,satirSayisi,sutunSayisi);
 
 		System.out.println();
@@ -46,9 +48,8 @@ public class Runner {
 
 		while(Devam)
 		{
-			hamleSayisi++;
 			System.out.println("Oyundan cikmak icin E'ye basin");
-			System.out.println("T yanindaki degeri girerek bir kutu secin. Ardindan T/F secimi yapýn. (Tahmin/Flag) ÖRNEK:61F");
+			System.out.println("T yanindaki degeri girerek bir kutu secin. Ardindan T/F/K secimi yapýn. (Tahmin/Flag/Flag kaldir) ÖRNEK:61F");
 			//System.out.println("Hamle Sayisi:"+hamleSayisi+"  Mayýn Sayýsý:"+mayinSayisi);
 			String girdi;
 			girdi = scan.next();
@@ -60,6 +61,7 @@ public class Runner {
 			}
 			
 			secilenIndis = Integer.parseInt(girdi.substring(0, girdi.length()-1));
+			ind2 = secilenIndis;
 			secilenIndis = secilenIndis-1;
 			
 			tahmin = girdi.substring(girdi.length()-1,girdi.length());
@@ -72,45 +74,44 @@ public class Runner {
 			
 			a.secilenIndis = secilenIndis;
 			//System.out.println("secilen indis:"+a.secilenIndis);
-			if(a.MayinMi()&&(tahmin.contains("F")))
+			if(tahmin.contains("F")&&(flagSayisi>0))
 			{
-				a.Tarla[a.secilenIndis] = "FLAG";
+				a.Tarla[a.secilenIndis] = "F"+ind2;
 				a.MatrisCiz(matrisBoyutu, sutunSayisi);
 				a.MayinKontrol[a.secilenIndis] = 1;
-				mayinSayisi--;
-				
-				int count2=0;
-				for(int i=0;i<matrisBoyutu;i++)
-				{
-					if(!a.Tarla[i].contains("T"))
-					{
-						count2++;
-					}
-				}
-
-				System.out.println("Açýlan Kutu:"+count2+"  Toplam:"+matrisBoyutu+
-						"  Hamle Sayýsý:"+hamleSayisi+"  Mayýn Sayýsý:"+mayinSayisi);
-				if(count2==matrisBoyutu)
-				{
-					System.out.println("Tebrikler, oyunu tamamladiniz :)");
-					Devam = false;			
-				}
-				
+				flagSayisi--;
+				Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
 				continue;
 			}
-			if(!(a.MayinMi())&&(tahmin.contains("F")))
+
+			if(tahmin.contains("K"))
 			{
+				if(a.Tarla[a.secilenIndis].contains("F"))
+				{
+					a.Tarla[a.secilenIndis] = "T"+ind2;
+					a.MatrisCiz(matrisBoyutu, sutunSayisi);
+					a.MayinKontrol[a.secilenIndis] = 0;
+					flagSayisi++;
+				}
+				Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
 				continue;
 			}
-
+			
 			if(a.MayinMi())
 			{
-				mayinSayisi--;
-				a.Tarla[a.secilenIndis] = "BOM";
-				a.MatrisCiz(matrisBoyutu, sutunSayisi);
-				a.MayinKontrol[a.secilenIndis] = 1;
-				if(!ilkTahmin)
+				if(ilkTahmin)
 				{
+					flagSayisi--;
+					a.Tarla[a.secilenIndis] = "F"+secilenIndis;
+					a.MayinKontrol[a.secilenIndis] = 1;
+					a.MatrisCiz(matrisBoyutu, sutunSayisi);
+				}
+				else
+				{
+					a.MayinlariGoster(a.MayinTarlasi, matrisBoyutu, sutunSayisi);
+					a.Tarla[a.secilenIndis] = "*BOM*";
+					a.MatrisCiz(matrisBoyutu, sutunSayisi);
+					a.MayinKontrol[a.secilenIndis] = 1;
 					Devam = false;
 					System.out.println("Mayin sectiniz, oyun bitti :(");
 					continue;
@@ -132,34 +133,32 @@ public class Runner {
 			/*System.out.println();
 		System.out.println();
 		a.MayinlariGoster(a.MayinTarlasi, matrisBoyutu, sutunSayisi);*/
-			int count2=0;
-			for(int i=0;i<matrisBoyutu;i++)
-			{
-				if(!a.Tarla[i].contains("T"))
-				{
-					count2++;
-				}
-			}
-
-			System.out.println("Açýlan Kutu:"+count2+"  Toplam:"+matrisBoyutu+
-					"  Hamle Sayýsý:"+hamleSayisi+"  Mayýn Sayýsý:"+mayinSayisi);
-			/*if((count2>=(matrisBoyutu-mayinSayisi))&&(mayinSayisi!=0))
-			{
-				System.out.println("Tebrikler, mayinsiz tum kutulari actiniz :)");
-				Devam = false;
-			}
-			if(mayinSayisi==0)
-			{
-				System.out.println("Tebrikler, tüm mayýnlarý buldunuz :)");
-				Devam = false;
-			}*/
-			if(count2==matrisBoyutu)
-			{
-				System.out.println("Tebrikler, oyunu tamamladiniz :)");
-				Devam = false;			
-			}
+			Devam = OyunDevam(a, matrisBoyutu, hamleSayisi, flagSayisi);
 			ilkTahmin = false;
 		}
+		scan.close();
+	}
+	public static boolean OyunDevam(Kutu a, int matrisBoyutu, int hamleSayisi, int flagSayisi)
+	{
+		boolean oyunDevam=true;
+		int count2=0;
+		for(int i=0;i<matrisBoyutu;i++)
+		{
+			if(!a.Tarla[i].contains("T")||(!a.Tarla[i].contains("F")))
+			{
+				count2++;
+			}
+		}
+		
+		System.out.println("Flag Sayisi: "+flagSayisi);
+
+		if(count2==hamleSayisi)
+		{
+			System.out.println("Tebrikler, oyunu tamamladiniz :)");
+			oyunDevam = false;			
+		}
+		
+		return oyunDevam;
 	}
 
 }
