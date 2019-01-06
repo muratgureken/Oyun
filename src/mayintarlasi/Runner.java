@@ -49,7 +49,7 @@ public class Runner {
 		while(Devam)
 		{
 			System.out.println("Oyundan cikmak icin E'ye basin");
-			System.out.println("T yanindaki degeri girerek bir kutu secin. Ardindan T/F/K secimi yapýn. (Tahmin/Flag/Flag kaldir) ÖRNEK:61F");
+			System.out.println("T/F/K secimi yapýn. (Tahmin/Flag/Flag kaldir). Ardindan T veya F yanindaki degeri girerek bir kutu secin.  ÖRNEK:F62");
 			//System.out.println("Hamle Sayisi:"+hamleSayisi+"  Mayýn Sayýsý:"+mayinSayisi);
 			String girdi;
 			girdi = scan.next();
@@ -60,11 +60,11 @@ public class Runner {
 				continue;
 			}
 			
-			secilenIndis = Integer.parseInt(girdi.substring(0, girdi.length()-1));
+			secilenIndis = Integer.parseInt(girdi.substring(1, girdi.length()));
 			ind2 = secilenIndis;
 			secilenIndis = secilenIndis-1;
 			
-			tahmin = girdi.substring(girdi.length()-1,girdi.length());
+			tahmin = girdi.substring(0,1);
 
 			if((secilenIndis)>=matrisBoyutu)
 			{
@@ -102,7 +102,7 @@ public class Runner {
 				if(ilkTahmin)
 				{
 					flagSayisi--;
-					a.Tarla[a.secilenIndis] = "F"+secilenIndis;
+					a.Tarla[a.secilenIndis] = "F"+ind2;
 					a.MayinKontrol[a.secilenIndis] = 1;
 					a.MatrisCiz(matrisBoyutu, sutunSayisi);
 				}
@@ -144,13 +144,13 @@ public class Runner {
 		int count2=0;
 		for(int i=0;i<matrisBoyutu;i++)
 		{
-			if(!a.Tarla[i].contains("T")||(!a.Tarla[i].contains("F")))
+			if((!a.Tarla[i].contains("T"))&&(!a.Tarla[i].contains("F")))
 			{
 				count2++;
 			}
 		}
 		
-		System.out.println("Flag Sayisi: "+flagSayisi);
+		System.out.println("Flag Sayisi: "+flagSayisi+" Acilan Kutu: "+count2+" Toplam Hamle: "+hamleSayisi);
 
 		if(count2==hamleSayisi)
 		{
