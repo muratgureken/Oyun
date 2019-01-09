@@ -1,8 +1,8 @@
 package yilan;
 
 public interface AraIslemler {
-	public int YilanIlklendir(int ilkDeger, int yilanBoyu);
-	public void RastgeleSayiUret(int oyunBoyu, int yilanBoyu);
+	public void YilanIlklendir(int ilkDeger, int baslangicBoy);
+	public void RastgeleSayiUret();
 	public void MatrisCiz(String yon);
-	public void YilaniYerlestir(String tus);
+	public boolean YilaniYerlestir(String tus);
 }

@@ -1,5 +1,6 @@
 package yilan;
 
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Runner {
@@ -13,28 +14,27 @@ public class Runner {
 		System.out.println(tus);*/
 		
 		Yilan oyun = new Yilan();
-		oyun.yilanBoyu = 4;
 		oyun.oyunBoyu = 10;
 		oyun.ilkDeger=1*oyun.oyunBoyu+1;
-		oyun.yilan = new int[oyun.oyunBoyu*oyun.oyunBoyu];
+		oyun.yilan = new LinkedList<Integer>();
 		oyun.yilanMatrisi = new int[oyun.oyunBoyu*oyun.oyunBoyu];
 
-		oyun.yilaninBasi = oyun.YilanIlklendir(oyun.ilkDeger, oyun.yilanBoyu);
-		/*System.out.println("yilan basi:"+oyun.yilaninBasi);*/
-		oyun.MatrisCiz("3");
-		/*System.out.println(oyun.YilanBasiniHesapla(99, "1"));*/
+		oyun.YilanIlklendir(oyun.ilkDeger, 4);
 		//rastgele yerde yem uretimi
-		oyun.RastgeleSayiUret(oyun.oyunBoyu, oyun.yilanBoyu);
+		oyun.RastgeleSayiUret();
+		System.out.println("YILAN  @@@@@@@@>");
+		oyun.MatrisCiz("3");
 		
 		while(devam)
 		{
+			System.out.println("sol:1 sað:3 yukarý:5 aþaðý:2");
 			String tus = scan.nextLine();
 			
-			/*oyun bitirme kriteri*/
-			if(!oyun.OyunDevamKontrol())
+			oyun.YilanBasiniHesapla(tus);
+			if(!(oyun.YilaniYerlestir(tus)))
 			{
 				devam = false;
-				System.out.println("Oyun bitti");
+				System.out.println("Oyun bitti");				
 			}
 		}
 		

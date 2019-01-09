@@ -1,96 +1,89 @@
 package yilan;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 public class Yilan implements AraIslemler{
 	public int oyunBoyu;
-	public int[] yilan;
+	LinkedList<Integer> yilan;
 	public int[] yilanMatrisi;
 	public int[] bosSatirSayisi;
-	public int yilanBoyu, ilkDeger, yilaninBasi;
+	public int ilkDeger;
 	
 	@Override
-	public int YilanIlklendir(int ilkDeger, int yilanBoyu)
-	{
-		int yilaninBasi;
-		
-		for(int i=0;i<yilanBoyu;i++)
+	public void YilanIlklendir(int ilkDeger, int baslangicBoy)
+	{		
+		for(int i=0;i<baslangicBoy;i++)
 		{
-			yilan[i] = ilkDeger+i;
+			yilan.add(ilkDeger+i);
 		}
 		
-		yilaninBasi = yilan[yilanBoyu-1];
-
 		for(int i=0;i<oyunBoyu*oyunBoyu;i++)
 		{
 			yilanMatrisi[i] = 0;
 		}
 		
-		for(int i=0;i<yilanBoyu;i++)
+		for(int i=0;i<yilan.size();i++)
 		{
-			yilanMatrisi[yilan[i]] = 1;
-		}
-		
-		return yilaninBasi;
+			yilanMatrisi[yilan.get(i)] = 1;
+		}	
 	}
 	
-	public int YilanBasiniHesapla(int yilanBasi, String tus)
-	{
-		int yilaninBasi;
+	public void YilanBasiniHesapla(String tus)
+	{		
+		int yilanBasi = yilan.getLast();
 		
 		switch(tus)
 		{
 		case "1":
 			if((yilanBasi%oyunBoyu)==0)
 			{
-				yilaninBasi = yilanBasi + (oyunBoyu-1);
+				yilan.add(yilanBasi + (oyunBoyu-1));
 			}
 			else
 			{
-				yilaninBasi = yilanBasi-1;
+				yilan.add(yilanBasi-1);
 			}
 			break;
 		case "2":
 			if(yilanBasi>=(oyunBoyu*(oyunBoyu-1)))
 			{
-				yilaninBasi = yilanBasi%oyunBoyu;
+				yilan.add(yilanBasi%oyunBoyu);
 			}
 			else
 			{
-				yilaninBasi = yilanBasi+oyunBoyu;
+				yilan.add(yilanBasi+oyunBoyu);
 			}
 			break;
 		case "3":
 			if((yilanBasi%oyunBoyu)==(oyunBoyu-1))
 			{
-				yilaninBasi = yilanBasi-(oyunBoyu-1);
+				yilan.add(yilanBasi-(oyunBoyu-1));
 			}
 			else
 			{
-				yilaninBasi = yilanBasi+1;
+				yilan.add(yilanBasi+1);
 			}
 			break;
 		default:
 			if(yilanBasi<oyunBoyu)
 			{
-				yilaninBasi = yilanBasi+oyunBoyu*(oyunBoyu-1);
+				yilan.add(yilanBasi+oyunBoyu*(oyunBoyu-1));
 			}
 			else
 			{
-				yilaninBasi = yilanBasi-oyunBoyu;
+				yilan.add(yilanBasi-oyunBoyu);
 			}
 			break;	
 		}
-		
-		return yilaninBasi;
 	}
 
 	@Override
-	public void RastgeleSayiUret(int oyunBoyu, int yilanBoyu) {
+	public void RastgeleSayiUret() {
 		int rastGeleSayi=0,count=-1;
 		
 		Random rand = new Random();
-		rastGeleSayi = rand.nextInt(oyunBoyu-yilanBoyu);
+		rastGeleSayi = rand.nextInt(oyunBoyu*oyunBoyu-yilan.size());
 		//System.out.println("rastgele sayi:"+rastGeleSayi);
 		for(int i=0;i<(oyunBoyu*oyunBoyu);i++)
 		{
@@ -104,7 +97,6 @@ public class Yilan implements AraIslemler{
 				}
 			}
 		}
-		yilanMatrisi[rastGeleSayi] = 2;
 	}
 
 	@Override
@@ -121,7 +113,7 @@ public class Yilan implements AraIslemler{
 			}
 			else if(yilanMatrisi[i]==1)
 			{
-				if(i==yilaninBasi)
+				if(i==yilan.getLast())
 				{
 					switch(yon)
 					{
@@ -135,7 +127,7 @@ public class Yilan implements AraIslemler{
 							System.out.print(" > ");
 							break;
 						default:
-							System.out.print(" A ");
+							System.out.print(" ^ ");
 							break;
 					}
 				}
@@ -146,20 +138,49 @@ public class Yilan implements AraIslemler{
 			}
 			else
 			{
-				System.out.println(" O ");
+				System.out.print(" O ");
 			}
 		}
 		System.out.println();
 	}
 
 	@Override
-	public void YilaniYerlestir(String tus) {
-  
-	}
-	
-	public boolean OyunDevamKontrol() {
-		boolean devam = false;
+	public boolean YilaniYerlestir(String tus) {
+		boolean oyunDevam=true;
 		
-		return devam;
+		//eger yilan bir onceki yilanbasi konumuna geri donmeye calisirsa oyun bitmesin, yilani hareket ettirme,
+		//bir onceki yilan basi konumuna geri dondur.
+		if(yilan.getLast()==yilan.get(yilan.size()-3))
+		{
+			yilan.removeLast();
+			return oyunDevam;
+		}
+		
+		if(yilanMatrisi[yilan.getLast()]==0)
+		{
+			yilanMatrisi[yilan.getLast()] = 1;
+			yilanMatrisi[yilan.getFirst()] = 0;
+			yilan.removeFirst();
+
+		}
+		else if(yilanMatrisi[yilan.getLast()]==2)
+		{
+			yilanMatrisi[yilan.getLast()] = 1;
+			//yem yendi ise yeniden yem uret
+			RastgeleSayiUret();
+		}
+		else
+		{
+			oyunDevam= false;
+			yilan.removeLast();
+		}
+		
+		if(yilan.size()==(oyunBoyu*oyunBoyu))
+		{
+			oyunDevam = false;
+		}
+		
+		MatrisCiz(tus);
+		return oyunDevam;
 	}
 }
