@@ -22,7 +22,7 @@ public class Runner {
 		oyun.YilanIlklendir(oyun.ilkDeger, 4);
 		//rastgele yerde yem uretimi
 		oyun.RastgeleSayiUret();
-		System.out.println("YILAN  @@@@@@@@>");
+		System.out.println("YILAN OYUNU");
 		oyun.MatrisCiz("3");
 		
 		while(devam)

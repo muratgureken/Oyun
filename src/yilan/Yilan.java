@@ -101,11 +101,17 @@ public class Yilan implements AraIslemler{
 
 	@Override
 	public void MatrisCiz(String yon) {
+		System.out.print(" ");
+		for(int i=0;i<oyunBoyu;i++)
+		{
+			System.out.print("---");
+		}		
 		for(int i=0;i<oyunBoyu*oyunBoyu;i++)
 		{
 			if((i%oyunBoyu)==0)
 			{
 				System.out.println();
+				System.out.print("|");
 			}
 			if(yilanMatrisi[i]==0)
 			{
@@ -140,6 +146,17 @@ public class Yilan implements AraIslemler{
 			{
 				System.out.print(" O ");
 			}
+			
+			if((i%oyunBoyu)==(oyunBoyu-1))
+			{
+				System.out.print("|");
+			}
+		}
+		System.out.println();
+		System.out.print(" ");
+		for(int i=0;i<oyunBoyu;i++)
+		{
+			System.out.print("---");
 		}
 		System.out.println();
 	}
