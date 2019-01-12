@@ -49,7 +49,7 @@ public class Runner {
 		while(Devam)
 		{
 			System.out.println("Oyundan cikmak icin E'ye basin");
-			System.out.println("T/F/K secimi yapın. (Tahmin/Flag/Flag kaldir). Ardindan T veya F yanindaki degeri girerek bir kutu secin.  ÖRNEK:F62");
+			System.out.println("T/F/K secimi yapın. (Tahmin/Flag/flag Kaldir). Ardindan T veya F yanindaki degeri girerek bir kutu secin.  ÖRNEK:F62");
 			//System.out.println("Hamle Sayisi:"+hamleSayisi+"  Mayın Sayısı:"+mayinSayisi);
 			String girdi;
 			girdi = scan.next();

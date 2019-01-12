@@ -16,7 +16,7 @@ public class Runner {
 		System.out.println(tus);*/
 
 		Yilan oyun = new Yilan();
-		oyun.oyunBoyu = 5;
+		oyun.oyunBoyu = 10;
 		oyun.ilkDeger=1*oyun.oyunBoyu+1;
 		oyun.yilan = new LinkedList<Integer>();
 		oyun.yilanMatrisi = new int[oyun.oyunBoyu*oyun.oyunBoyu];

@@ -183,27 +183,34 @@ public void TarlayiDoldur(Kutu a, String [] Tarla, int[] MayinTarlasi, int[] May
 	//System.out.println(a.mayinKomsular+" "+a.komsuSayisi+" "+a.secilenIndis);
 	Tarla[a.secilenIndis] = Integer.toString(a.mayinKomsular);
 	MayinKontrol[a.secilenIndis] = 1;
-	for(int i=0;i<a.komsuSayisi;i++)
+	if(a.mayinKomsular==0)
 	{
-		/*System.out.println("Komsu:"+a.Komsular[i]+" kontrol:"+MayinKontrol[a.Komsular[i]]+" mayin mi? "+
+		for(int i=0;i<a.komsuSayisi;i++)
+		{
+			/*System.out.println("Komsu:"+a.Komsular[i]+" kontrol:"+MayinKontrol[a.Komsular[i]]+" mayin mi? "+
 				MayinTarlasi[a.Komsular[i]]);*/
 
-		if(MayinKontrol[a.Komsular[i]]==1)
-		{
-			continue;
-		}
-		Kutu komsu = new Kutu();
-		komsu.secilenIndis = a.Komsular[i];
-		MayinKontrol[komsu.secilenIndis] = 1;
-		komsu.KomsulariBul(satirSayisi,sutunSayisi);
-		komsu.NoktaDegeri(MayinTarlasi);
-		//System.out.println(i+" "+komsu.mayinKomsular+" "+MayinTarlasi[komsu.secilenIndis]+" "+komsu.secilenIndis);
-		if((komsu.mayinKomsular==0)&&(MayinTarlasi[komsu.secilenIndis]!=1))
-		{
-			//System.out.println("tarla doldur");
-			TarlayiDoldur(komsu, Tarla, MayinTarlasi, MayinKontrol, satirSayisi, sutunSayisi, iterasyon);
-		}
-	}          
+			if(MayinKontrol[a.Komsular[i]]==1)
+			{
+				continue;
+			}
+			Kutu komsu = new Kutu();
+			komsu.secilenIndis = a.Komsular[i];
+			MayinKontrol[komsu.secilenIndis] = 1;
+			komsu.KomsulariBul(satirSayisi,sutunSayisi);
+			komsu.NoktaDegeri(MayinTarlasi);
+			//System.out.println(i+" "+komsu.mayinKomsular+" "+MayinTarlasi[komsu.secilenIndis]+" "+komsu.secilenIndis);
+			if((komsu.mayinKomsular==0)&&(MayinTarlasi[komsu.secilenIndis]!=1))
+			{
+				//System.out.println("tarla doldur");
+				TarlayiDoldur(komsu, Tarla, MayinTarlasi, MayinKontrol, satirSayisi, sutunSayisi, iterasyon);
+			}
+			else
+			{
+				Tarla[komsu.secilenIndis] = Integer.toString(komsu.mayinKomsular);
+			}
+		}      
+	}
 }
 
 @Override
