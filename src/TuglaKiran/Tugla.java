@@ -4,14 +4,13 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Tugla implements AraIslemler{
-	public int oyunBoyu, hamleSayisi;
+	public int oyunBoyu, skor;
 	public int[] tuglalar;
-	public int[] hamleler;
-	private int oyuncununYeri, hamleSayisiOkunan, beklemeSuresi=1;
+	private int oyuncununYeri, beklemeSuresi=500, hamle;
 	
-	public Tugla(int oyunBoyu, int hamleSayisi) {
+	public Tugla(int oyunBoyu) {
 		this.oyunBoyu = oyunBoyu;
-		this.hamleSayisi = hamleSayisi;
+                skor = 0;
 		TuglaIlklendir();
 		MatrisIlklendir();
 		MatrisCiz();
@@ -20,13 +19,13 @@ public class Tugla implements AraIslemler{
 	public void TuglaIlklendir()
 	{
 		tuglalar = new int[oyunBoyu*oyunBoyu];
-		hamleler = new int[hamleSayisi];
 	}
 	
 	@Override
 	public void MatrisCiz() {
 		//tuglalar: 0: bos, 1: tugla, 2:top olan oyuncu 3:top olmayan oyuncu 4:top
-		for(int i=0;i<(oyunBoyu*oyunBoyu);i++)
+		          System.out.println("SKOR : "+skor);
+                for(int i=0;i<(oyunBoyu*oyunBoyu);i++)
 		{
 			if(i%oyunBoyu==0)
 			{
@@ -126,38 +125,29 @@ public class Tugla implements AraIslemler{
 	@Override
 	public void HamleyiOku(String hamle) {
 		//hamleler: 0:ates, 1:sol, 2:sag
-		
-		//hamle sayisi belirlenen hamle sayisi ile sinirlanir.
-		hamleSayisiOkunan = hamle.length();
-		if(hamleSayisiOkunan>hamleSayisi)
-		{
-			hamleSayisiOkunan = hamleSayisi;
-		}
-		
-		for(int i=0;i<hamleSayisiOkunan;i++)
-		{
-			switch(hamle.substring(i,i+1))
+
+			switch(hamle)
 			{
 				case "a"://ates
-					hamleler[i] = 0;
+					this.hamle = 0;
 					break;
 				case "1"://sol
-					hamleler[i] = 1;
+					this.hamle = 1;
 					break;
 				case "3"://sag
-					hamleler[i] = 2;
+					this.hamle = 2;
 					break;					
 				default:
-					break;
+					this.hamle = -1;
+                                        break;
 			}
 		}
-	}
+	
 
 	public void HamleYap() throws InterruptedException {
 		int enYakinTugla;
-		for(int i=0;i<hamleSayisiOkunan;i++)
-		{
-			if(hamleler[i]==1) //oyuncu sola gidecek
+                        //System.out.println("hamle:"+hamle);
+			if(hamle==1) //oyuncu sola gidecek
 			{
 				//oyuncu en solda mi kontrol et, degilse sola kaydir. yoksa bisey yapma
 				if((oyuncununYeri%oyunBoyu)!=0)
@@ -167,9 +157,9 @@ public class Tugla implements AraIslemler{
 					tuglalar[oyuncununYeri] = 2;
 				}
 				MatrisCiz();
-				TimeUnit.SECONDS.sleep(beklemeSuresi);
+				TimeUnit.MILLISECONDS.sleep(beklemeSuresi);
 			}
-			else if(hamleler[i]==2) // oyuncu saga gidecek
+			else if(hamle==2) // oyuncu saga gidecek
 			{
 				//oyuncu en sagda mi kontrol et, degilse saga kaydir. yoksa bisey yapma
 				if((oyuncununYeri%oyunBoyu)!=(oyunBoyu-1))
@@ -179,9 +169,9 @@ public class Tugla implements AraIslemler{
 					tuglalar[oyuncununYeri] = 2;
 				}			
 				MatrisCiz();
-				TimeUnit.SECONDS.sleep(beklemeSuresi);
+				TimeUnit.MILLISECONDS.sleep(beklemeSuresi);
 			}
-			else //oyuncu ates edecek
+			else if(hamle==0)//oyuncu ates edecek
 			{
 				//oncelikle oyuncunun bulundugu kolondaki en yakin kolonu bul (varsa)
 				enYakinTugla = EnYakinTuglayiBul();
@@ -191,9 +181,10 @@ public class Tugla implements AraIslemler{
 				if(enYakinTugla!=-1)
 				{
 					tuglalar[enYakinTugla] = 4;
+                                        skor++;
 				}
 				MatrisCiz();
-				TimeUnit.SECONDS.sleep(beklemeSuresi);
+				TimeUnit.MILLISECONDS.sleep(beklemeSuresi);
 				//topu kullaniciya geri yerlestir, tugla yokolduysa orayi temizle
 				tuglalar[oyuncununYeri] = 2;
 				if(enYakinTugla!=-1)
@@ -201,15 +192,11 @@ public class Tugla implements AraIslemler{
 					tuglalar[enYakinTugla] = 0;
 				}
 				MatrisCiz();
-				TimeUnit.SECONDS.sleep(beklemeSuresi);
+				TimeUnit.MILLISECONDS.sleep(beklemeSuresi);
 			}
-			
 		}
-		//tum hamleler tamamlandiktan sonra varolan satirlari bir alta kaydir ve en ust satira tugla uret
-		TuglalariAsagiIndir();
-		RastgeleTuglaUret();
-		MatrisCiz();
-	}
+
+	
 
 	private int EnYakinTuglayiBul() {
 		int enYakinTugla=-1;
@@ -243,7 +230,7 @@ public class Tugla implements AraIslemler{
 		return durum;
 	}
 	
-	private void TuglalariAsagiIndir()
+	public void TuglalariAsagiIndir()
 	{
 		//kaydirma islemi sondan baslamali, aksi takdirde matris karisir
 		//son satira bakmaya gerek yok. orayavarildiginda zaten oyun bitiyor.
@@ -255,5 +242,7 @@ public class Tugla implements AraIslemler{
 				tuglalar[i+oyunBoyu] = 1;
 			}
 		}
+                RastgeleTuglaUret();
+                MatrisCiz();			
 	}
 }
