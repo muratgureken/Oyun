@@ -122,32 +122,10 @@ public class Tugla implements AraIslemler{
 		oyuncununYeri = (oyunBoyu*(oyunBoyu-1)+oyunBoyu/2);
 	}
 
-	@Override
-	public void HamleyiOku(String hamle) {
-		//hamleler: 0:ates, 1:sol, 2:sag
-
-			switch(hamle)
-			{
-				case "a"://ates
-					this.hamle = 0;
-					break;
-				case "1"://sol
-					this.hamle = 1;
-					break;
-				case "3"://sag
-					this.hamle = 2;
-					break;					
-				default:
-					this.hamle = -1;
-                                        break;
-			}
-		}
-	
-
-	public void HamleYap() throws InterruptedException {
+	public void HamleYap(String hamle) throws InterruptedException {
 		int enYakinTugla;
                         //System.out.println("hamle:"+hamle);
-			if(hamle==1) //oyuncu sola gidecek
+			if(hamle.contains("1")) //oyuncu sola gidecek
 			{
 				//oyuncu en solda mi kontrol et, degilse sola kaydir. yoksa bisey yapma
 				if((oyuncununYeri%oyunBoyu)!=0)
@@ -159,7 +137,7 @@ public class Tugla implements AraIslemler{
 				MatrisCiz();
 				TimeUnit.MILLISECONDS.sleep(beklemeSuresi);
 			}
-			else if(hamle==2) // oyuncu saga gidecek
+			else if(hamle.contains("3")) // oyuncu saga gidecek
 			{
 				//oyuncu en sagda mi kontrol et, degilse saga kaydir. yoksa bisey yapma
 				if((oyuncununYeri%oyunBoyu)!=(oyunBoyu-1))
@@ -171,7 +149,7 @@ public class Tugla implements AraIslemler{
 				MatrisCiz();
 				TimeUnit.MILLISECONDS.sleep(beklemeSuresi);
 			}
-			else if(hamle==0)//oyuncu ates edecek
+			else if(hamle.contains("a"))//oyuncu ates edecek
 			{
 				//oncelikle oyuncunun bulundugu kolondaki en yakin kolonu bul (varsa)
 				enYakinTugla = EnYakinTuglayiBul();

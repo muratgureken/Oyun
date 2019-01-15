@@ -19,8 +19,7 @@ public class Runner {
 			System.out.println("HAMLELER --> a:ates 1:sol 3:sag, "+ (hamleSayisi-count) +" HAMLE sonra tuglalar bir asagi inecektir.");
 			hamle = scan.nextLine();
                         hamle = hamle.substring(0,1);
-			oyun.HamleyiOku(hamle);
-			oyun.HamleYap();
+			oyun.HamleYap(hamle);
                         count++;
                         
                         
