@@ -16,7 +16,7 @@ public class Runner {
 		System.out.println("TUGLA KIRMA OYUNU");
 		while(oyunDevam)
 		{
-			if(oyun.skor == 20)
+			if(oyun.skor == 10)
 			{
 				oyun.skor = 0;
 				oyun.seviye = 2;

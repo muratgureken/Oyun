@@ -25,7 +25,8 @@ public class Tugla implements AraIslemler{
 	@Override
 	public void MatrisCiz() {
 		//tuglalar: 0: bos, 1: tugla, 2:top olan oyuncu 3:top olmayan oyuncu 4:top
-		System.out.println("SKOR : "+skor);
+		System.out.print("SEVIYE:"+seviye);		
+		System.out.println("  SKOR:"+skor);
 		for(int i=0;i<(oyunBoyu*oyunBoyu);i++)
 		{
 			if(i%oyunBoyu==0)
