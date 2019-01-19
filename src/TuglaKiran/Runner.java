@@ -16,14 +16,25 @@ public class Runner {
 		System.out.println("TUGLA KIRMA OYUNU");
 		while(oyunDevam)
 		{
-			if(oyun.skor == 10)
+			if((oyun.skor==5)&&(oyun.seviye==1))
 			{
 				oyun.skor = 0;
 				oyun.seviye = 2;
 				System.out.println("TEBKRIKLER, 2. SEVIYEYE GECTINIZ :)");
 				oyun.MatrisIlklendir();
 				oyun.MatrisCiz();
+				count = 0;
 			}
+
+			if((oyun.skor==5)&&(oyun.seviye==2))
+			{
+				oyun.skor = 0;
+				System.out.println("TEBKRIKLER, 3. SEVIYEYE GECTINIZ :)");
+				hamleSayisi = 3;
+				oyun.MatrisIlklendir();
+				oyun.MatrisCiz();
+				count = 0;
+			}			
 			
 			System.out.println("HAMLELER --> a:ates 1:sol 3:sag, "+ (hamleSayisi-count) +" HAMLE sonra tuglalar bir asagi inecektir.");
 			hamle = scan.nextLine();

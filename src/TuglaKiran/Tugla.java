@@ -176,8 +176,6 @@ public class Tugla implements AraIslemler{
 		}
 	}
 
-
-
 	private int EnYakinTuglayiBul() {
 		int enYakinTugla=-1;
 
