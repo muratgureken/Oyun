@@ -7,7 +7,7 @@ public abstract class dama {
 	public static int secilenTasKonum;
 	public static int[] hamleler;
 	public static int[] elenenTas;
-	
+
 	static {
 		hamleler = new int[14];
 		elenenTas = new int[14];
@@ -30,44 +30,43 @@ public abstract class dama {
 				damaMasasi[i][j] = 0;
 			}
 		}
-		System.out.println("arac static blok calisti");
 	}
-	
+
 	public static int tasYeri2MasaKonumu(String tasYeri)
 	{
 		int masaKonumu=0,satir=0,sutun=0;
-		
+
 		switch(tasYeri.substring(0, 1))
 		{
-			case "A":
-				satir = 0;
-				break;
-			case "B":
-				satir = 1;
-				break;
-			case "C":
-				satir = 2;
-				break;
-			case "D":
-				satir = 3;
-				break;
-			case "E":
-				satir = 4;
-				break;
-			case "F":
-				satir = 5;
-				break;
-			case "G":
-				satir = 6;
-				break;
-			case "H":
-				satir = 7;
-				break;
-			default:
-				break;
+		case "A":
+			satir = 0;
+			break;
+		case "B":
+			satir = 1;
+			break;
+		case "C":
+			satir = 2;
+			break;
+		case "D":
+			satir = 3;
+			break;
+		case "E":
+			satir = 4;
+			break;
+		case "F":
+			satir = 5;
+			break;
+		case "G":
+			satir = 6;
+			break;
+		case "H":
+			satir = 7;
+			break;
+		default:
+			break;
 		}
-		
-		sutun = Integer.parseInt(tasYeri.substring(1, 1-2));
+
+		sutun = Integer.parseInt(tasYeri.substring(1, 2));
 		sutun = sutun-1;
 		//yanlis deger girilmesine onlem
 		if(sutun<0)
@@ -78,12 +77,12 @@ public abstract class dama {
 		{
 			sutun = 0;
 		}
-		
+
 		masaKonumu = satir*10+sutun;
-		
+
 		return masaKonumu;
 	}
-	
+
 	public void oyuncuTipiSecimi()
 	{
 		oyuncuTipiSecimi++;
@@ -92,11 +91,11 @@ public abstract class dama {
 			oyuncuTipiSecimi = 1;
 		}
 	}
-		
+
 	public void hamleleriIsle()
 	{
 		int satir, sutun;
-		
+		//System.out.println("hamle islede hamle sayisi:"+hamleSayisi);
 		for(int i=0;i<hamleSayisi;i++)
 		{
 			satir = hamleler[i]/10;
@@ -104,20 +103,38 @@ public abstract class dama {
 			damaMasasi[satir][sutun] = 3;
 		}
 	}
+
+	public static void hamleleriSil()
+	{
+		for(int i=0;i<8;i++)
+		{
+			for(int j=0;j<8;j++)
+			{
+				if(damaMasasi[i][j]==3)
+				{
+					damaMasasi[i][j] = 0;	
+				}
+			}
+		}		
+	}
 	
 	public static void damaMasasiCiz()
 	{
 		int satir=-1,sutun=-1;
+		String satirIsim="ABCDEFGH";
 		
-                //UYARI: matris yanina A-H ve 1-8 bilgilerini yaz.
-                if(secilenTasKonum>-1)
-                {
-                    satir = secilenTasKonum/10;
-                    sutun = secilenTasKonum%10;
-                }
-                
+		if(secilenTasKonum>-1)
+		{
+			satir = secilenTasKonum/10;
+			sutun = secilenTasKonum%10;
+		}
+
+		System.out.println("    1  2  3  4  5  6  7  8");
+		
 		for(int i=0;i<8;i++)
 		{
+			
+			System.out.print(" "+satirIsim.substring(i,i+1)+" ");
 			for(int j=0; j<8; j++)
 			{
 				//secilen tasi belirtmek icin bas ve sonuna [] konulur.
@@ -129,44 +146,40 @@ public abstract class dama {
 				{
 					System.out.print(" ");
 				}
-				
+
 				// ilk oyuncu normal tas
 				if(damaMasasi[i][j]==1)
 				{
-					System.out.print("b");
+					System.out.print("q");
 				}
 				//ikinci oyuncu normal tas
 				else if(damaMasasi[i][j]==2)
 				{
-					System.out.print("d");
+					System.out.print("t");
 				}
 				//ilk oyuncu dama tasi
 				else if(damaMasasi[i][j]==11)
 				{
-					System.out.print("B");
+					System.out.print("Q");
 				}
 				//ikinci oyuncu dama tasi
 				else if(damaMasasi[i][j]==12)
 				{
-					System.out.print("D");
+					System.out.print("T");
 				}
 				//hamleler
-				else if(damaMasasi[i][j]==12)
+				else if(damaMasasi[i][j]==3)
 				{
-					System.out.print("D");
+					System.out.print("O");
+					//hamle ile isaretlenen satirlari yeniden 0a cekelim.
+					damaMasasi[i][j] = 0;
 				}
-                                else if(damaMasasi[i][j]==3)
-                                {
-                                        System.out.print("O");
-                                        //hamle ile isaretlenen satirlari yeniden 0a cekelim.
-                                        damaMasasi[i][j] = 0;
-                                }
 				//bos 
 				else
 				{
-					System.out.print(" . ");
+					System.out.print(".");
 				}	
-				
+
 				//secilen tasi belirtmek icin bas ve sonuna [] konulur.
 				if((i==satir)&&(j==sutun))
 				{
