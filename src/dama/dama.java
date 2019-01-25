@@ -33,7 +33,7 @@ public abstract class dama {
 		System.out.println("arac static blok calisti");
 	}
 	
-	public int tasYeri2MasaKonumu(String tasYeri)
+	public static int tasYeri2MasaKonumu(String tasYeri)
 	{
 		int masaKonumu=0,satir=0,sutun=0;
 		
@@ -92,25 +92,7 @@ public abstract class dama {
 			oyuncuTipiSecimi = 1;
 		}
 	}
-	
-	public int tasSay(int oyuncuTipi)
-	{
-		int count=0;
 		
-		for(int i=0; i<8; i++)
-		{
-			for(int j=0; j<8; j++)
-			{
-				if((damaMasasi[i][j])==oyuncuTipi)
-				{
-					count++;
-				}
-			}
-		}
-		
-		return count;
-	}
-	
 	public void hamleleriIsle()
 	{
 		int satir, sutun;
@@ -123,13 +105,17 @@ public abstract class dama {
 		}
 	}
 	
-	public void damaMasasiCiz()
+	public static void damaMasasiCiz()
 	{
-		int satir,sutun;
+		int satir=-1,sutun=-1;
 		
-		satir = secilenTasKonum/10;
-		sutun = secilenTasKonum%10;
-		
+                //UYARI: matris yanina A-H ve 1-8 bilgilerini yaz.
+                if(secilenTasKonum>-1)
+                {
+                    satir = secilenTasKonum/10;
+                    sutun = secilenTasKonum%10;
+                }
+                
 		for(int i=0;i<8;i++)
 		{
 			for(int j=0; j<8; j++)
@@ -169,6 +155,12 @@ public abstract class dama {
 				{
 					System.out.print("D");
 				}
+                                else if(damaMasasi[i][j]==3)
+                                {
+                                        System.out.print("O");
+                                        //hamle ile isaretlenen satirlari yeniden 0a cekelim.
+                                        damaMasasi[i][j] = 0;
+                                }
 				//bos 
 				else
 				{

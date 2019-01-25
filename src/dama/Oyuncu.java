@@ -2,7 +2,7 @@ package dama;
 
 public class Oyuncu extends dama{
 
-	public int oyuncuTipi;
+	public int oyuncuTipi, tasSayisi;
 	private int digerOyuncuTipi, gecerliHamleIndis;
 	
 	public Oyuncu() {
@@ -10,18 +10,15 @@ public class Oyuncu extends dama{
 		oyuncuTipi = oyuncuTipiSecimi;
 	}
 
-	public boolean hamleleriHesapla(String tasYeri)
+	public boolean hamleleriHesapla()
 	{
 		//HAMLE FORMATI: SATIR x 10 + SUTUN
 
 		boolean durum=false;
-		int satir, sutun, konum, araDeger, damaAraligi, bas,son;
-		konum = tasYeri2MasaKonumu(tasYeri);
-		satir = konum/10;
-		sutun = konum%10;
-		
-		secilenTasKonum = konum;
-		
+		int satir, sutun, araDeger;
+		satir = secilenTasKonum/10;
+		sutun = secilenTasKonum%10;
+				
 		//diger oyuncunun tipi belirlenir (1 veya 2 olacak)
 		digerOyuncuTipi = oyuncuTipi++;
 		if(digerOyuncuTipi>2)
@@ -37,7 +34,7 @@ public class Oyuncu extends dama{
 		if(damaMasasi[satir][sutun]<10)
 		{
 			//damataslari 11-12 degerlerini aliyor. normal taslar 1-2 oluyor.
-			//komsulara bakýlarak hamle hesaplanir. maksimum 4 komsusu olabilir.
+			//komsulara bakï¿½larak hamle hesaplanir. maksimum 4 komsusu olabilir.
 
 			//ZORUNLU HAMLELER:
 			if((satir-1)>=0)
@@ -128,7 +125,7 @@ public class Oyuncu extends dama{
 						hamleler[hamleSayisi] = (satir-1)*10+sutun;
 						elenenTas[hamleSayisi] = -1;
 						hamleSayisi++;
-						zorunluHamleVar = 1;
+						zorunluHamleVar = 0;
 					}
 				}
 
@@ -140,7 +137,7 @@ public class Oyuncu extends dama{
 						hamleler[hamleSayisi] = (satir+1)*10+sutun;
 						elenenTas[hamleSayisi] = -1;
 						hamleSayisi++;
-						zorunluHamleVar = 1;
+						zorunluHamleVar = 0;
 					}				
 				}
 				if((sutun-1)>=0)
@@ -151,7 +148,7 @@ public class Oyuncu extends dama{
 						hamleler[hamleSayisi] = satir*10+(sutun-1);
 						elenenTas[hamleSayisi] = -1;
 						hamleSayisi++;
-						zorunluHamleVar = 1;
+						zorunluHamleVar = 0;
 					}	
 				}
 				if((sutun+1)<=7)
@@ -162,7 +159,7 @@ public class Oyuncu extends dama{
 						hamleler[hamleSayisi] = satir*10+(sutun+1);
 						elenenTas[hamleSayisi] = -1;
 						hamleSayisi++;
-						zorunluHamleVar = 1;
+						zorunluHamleVar = 0;
 					}				
 				}
 			}
@@ -172,59 +169,25 @@ public class Oyuncu extends dama{
 		else if(damaMasasi[satir][sutun]<10)
 		{
 			//UYARI: mutlaka guncelle. Elenen tasi da hesapla.
-			//satirdaki hamleler hesaplanir.
-			damaAraligi = enYakinKendiTasiniBul(konum, "satir");
-			bas = damaAraligi/10;
-			son = damaAraligi%10;
-			//bas -1 olmasi durumunda son eksi olmamasi icin onlem alinir.
-			if(son<0)
-			{
-				son = -1*son;
-			}
-			for(int i=bas+1;i<son;i++)
-			{
-				//kendi uzerine hamle yapamaz
-				if(i!=satir)
-				{
-					hamleler[hamleSayisi] = i*10+sutun;
-					hamleSayisi++;
-				}
-			}
-
-			damaAraligi = enYakinKendiTasiniBul(konum, "sutun");
-			bas = damaAraligi/10;
-			son = damaAraligi%10;
-			//bas -1 olmasi durumunda son eksi olmamasi icin onlem alinir.
-			if(son<0)
-			{
-				son = -1*son;
-			}
-			for(int i=bas+1;i<son;i++)
-			{
-				//kendi uzerine hamle yapamaz
-				if(i!=sutun)
-				{
-					hamleler[hamleSayisi] = satir*10+i;
-					hamleSayisi++;
-				}
-			}
+                        //UYARI: zorunluhamlevar alanini doldurmak gerekiyor.
+			enYakinKendiTasiniBul();
 		}
 
-
+                hamleleriIsle();
 		return durum;
 	}
 
-	public int enYakinKendiTasiniBul(int konum, String taramaBoyutu)
+	private int enYakinKendiTasiniBul()
 	{
 		// satir veya sutunda sag veya solda kendine en yakin tasini bul.
 		//once sol en yakini bul ,sonra sag en yakini bul sagi 10la carp, ikisini topla.
 		int sonuc=-1, solEnYakin=-1, sagEnYakin=-1,satir,sutun,count;
-		satir = konum/10;
-		sutun = konum%10;
-		if(taramaBoyutu.equals("satir"))
-		{
+		satir = secilenTasKonum/10;
+		sutun = secilenTasKonum%10;
+
 			//sola bak
 			solEnYakin = -1;
+                        sagEnYakin = satir;
 			count=0;
 			if(satir!=0)
 			{
@@ -239,19 +202,31 @@ public class Oyuncu extends dama{
 					//en yakin oldugu ilk tas karsi oyuncu ise bir sonraki de karsi oyuncu olur mu kontrolu yap
 					if(damaMasasi[i][sutun]==(digerOyuncuTipi%10))
 					{
-						count++;
+                                            sagEnYakin = i;
+                                            count++;
 					}
 					//2 kez karsi oyuncu tasina rastlarsa 2.den onceki tasi sec
 					if(count==2)
 					{
-						solEnYakin = i+1;
+						solEnYakin = i;
 						break;
 					}
 				}
 			}
 
+			for(int i=solEnYakin+1;i<sagEnYakin;i++)
+			{
+				//kendi uzerine hamle yapamaz
+				if(i!=satir)
+				{
+					hamleler[hamleSayisi] = i*10+sutun;
+					hamleSayisi++;
+				}
+			}
+                        
 			//saga bak
 			sagEnYakin = 8;
+                        solEnYakin = satir;
 			count=0;
 			if(satir!=7)
 			{
@@ -266,21 +241,32 @@ public class Oyuncu extends dama{
 					//en yakin oldugu ilk tas karsi oyuncu ise bir sonraki de karsi oyuncu olur mu kontrolu yap
 					if(damaMasasi[i][sutun]==(digerOyuncuTipi%10))
 					{
-						count++;
+                                            solEnYakin = i;
+                                            count++;
 					}
 					//2 kez karsi oyuncu tasina rastlarsa 2.den onceki tasi sec
 					if(count==2)
 					{
-						sagEnYakin = i-1;
+						sagEnYakin = i;
 						break;
 					}
 				}
 			}
-		}
-		if(taramaBoyutu.equals("sutun"))
-		{
+                        
+                        for(int i=solEnYakin+1;i<sagEnYakin;i++)
+			{
+				//kendi uzerine hamle yapamaz
+				if(i!=satir)
+				{
+					hamleler[hamleSayisi] = i*10+sutun;
+					hamleSayisi++;
+				}
+			}
+		
+
 			//sola bak
 			solEnYakin = -1;
+                        sagEnYakin = sutun;
 			count=0;
 			if(sutun!=0)
 			{
@@ -295,7 +281,8 @@ public class Oyuncu extends dama{
 					//en yakin oldugu ilk tas karsi oyuncu ise bir sonraki de karsi oyuncu olur mu kontrolu yap
 					if(damaMasasi[satir][i]==(digerOyuncuTipi%10))
 					{
-						count++;
+                                            sagEnYakin = i;
+                                            count++;
 					}
 					//2 kez karsi oyuncu tasina rastlarsa 2.den onceki tasi sec
 					if(count==2)
@@ -305,9 +292,20 @@ public class Oyuncu extends dama{
 					}
 				}
 			}
+                        
+                        for(int i=solEnYakin+1;i<sagEnYakin;i++)
+			{
+				//kendi uzerine hamle yapamaz
+				if(i!=sutun)
+				{
+					hamleler[hamleSayisi] = satir*10+i;
+					hamleSayisi++;
+				}
+			}
 
 			//saga bak
 			sagEnYakin = 8;
+                        solEnYakin = sutun;
 			count=0;
 			if(sutun!=7)
 			{
@@ -322,7 +320,8 @@ public class Oyuncu extends dama{
 					//en yakin oldugu ilk tas karsi oyuncu ise bir sonraki de karsi oyuncu olur mu kontrolu yap
 					if(damaMasasi[satir][i]==(digerOyuncuTipi%10))
 					{
-						count++;
+						solEnYakin = i;
+                                                count++;
 					}
 					//2 kez karsi oyuncu tasina rastlarsa 2.den onceki tasi sec
 					if(count==2)
@@ -331,8 +330,18 @@ public class Oyuncu extends dama{
 						break;
 					}
 				}
-			}		
-		}
+			}
+                        
+                        for(int i=solEnYakin+1;i<sagEnYakin;i++)
+			{
+				//kendi uzerine hamle yapamaz
+				if(i!=sutun)
+				{
+					hamleler[hamleSayisi] = satir*10+i;
+					hamleSayisi++;
+				}
+			}
+		
 
 		sonuc = solEnYakin*10+sagEnYakin;
 		return sonuc;
@@ -362,8 +371,8 @@ public class Oyuncu extends dama{
 		konum = tasYeri2MasaKonumu(hamleYeri);
 		satir = konum/10;
 		sutun = konum%10;
-		satir = secilenTasKonum/10;
-		sutun = secilenTasKonum%10;;
+		satir2 = secilenTasKonum/10;
+		sutun2 = secilenTasKonum%10;;
 		//hamle, hamleler listesinde mi kontrol et
 		
 		//hamle gecerli ise
@@ -376,11 +385,56 @@ public class Oyuncu extends dama{
 			satir = elenenTas[gecerliHamleIndis]/10;
 			sutun = elenenTas[gecerliHamleIndis]%10;
 			damaMasasi[satir][sutun] = 0;
-		}
-
-		//tasin yeni konumu guncellenir.
-		secilenTasKonum = konum;
-		
+                       
+                        //tasin yeni konumu guncellenir.
+                        secilenTasKonum = konum;  
+                        //tas dama olacak sarti saglamis ve hala dama degilse, dama yapilir.
+                        if((damaMasasi[satir][sutun]<10)&&tasDamaOlduMu())
+                        {
+                            damaMasasi[satir][sutun] = damaMasasi[satir][sutun]+10;
+                        }
+                        durum = true;
+		}	
 		return durum;
 	}
+        
+        private boolean tasDamaOlduMu()
+        {
+            boolean durum=false;
+            
+            if(oyuncuTipi==1)
+            {
+                if((secilenTasKonum/10)==7)
+                {
+                    durum=true;
+                }
+            }
+            else if(oyuncuTipi==2)
+            {
+                if((secilenTasKonum/10)==0)
+                {
+                    durum = true;
+                }
+            }
+            
+            return durum;
+        }
+        
+        public int OyuncuTasiSay()
+        {
+            int tasSayisi=0;
+            
+            for(int i=0;i<8;i++)
+            {
+                for(int j=0; j<8; j++)
+                {
+                    if(damaMasasi[i][j]==oyuncuTipi)
+                    {
+                        tasSayisi++;
+                    }
+                }
+            }
+            
+            return tasSayisi;
+        }
 }
