@@ -6,11 +6,12 @@ public abstract class dama {
 	public static int oyuncuTipiSecimi=0, hamleSayisi, zorunluHamleVar;
 	public static int secilenTasKonum, elenecekTasSayisi;
 	public static int[] hamleler;
-	public static int[] elenenTas;
+	public static int[] elenenTas, elenenIndis;
 
 	static {
 		hamleler = new int[14];
-		elenenTas = new int[14];
+		elenenTas = new int[4];
+		elenenIndis = new int[4];
 		damaMasasi = new int[8][8];
 		hamleSayisi = 0;
 		for(int i=0;i<8;i++)

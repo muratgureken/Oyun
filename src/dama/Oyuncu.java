@@ -482,7 +482,7 @@ public class Oyuncu extends dama{
 					}
 				}
 			}
-
+			elenenIndis[i] = hamleSayisi;
 		}
 
 		//System.out.println("hamle sayisi:"+hamleSayisi+" elenecek tas sayisi:"+elenecekTasSayisi);
@@ -494,30 +494,54 @@ public class Oyuncu extends dama{
 	private boolean hamleGecerliMi(int konum)
 	{
 		boolean durum=false;
+		int satir2,sutun2;
 		gecerliHamleIndis = -1;
+		
+		satir2 = secilenTasKonum/10;
+		sutun2 = secilenTasKonum%10;
 		//System.out.println("hamle sayisi:"+hamleSayisi);
 		for(int i=0;i<hamleSayisi;i++)
 		{
 			if(hamleler[i]==konum)
 			{
 				gecerliHamleIndis = i;
+				if(damaMasasi[satir2][sutun2]>10)
+				{
+					gecerliHamleIndis = damaninEleyecegiTasiBul(i);
+				}
 				durum = true;
+				break;
 			}
 		}
 
 		return durum;
 	}
 
+	private int damaninEleyecegiTasiBul(int i)
+	{
+		int elenecekIndis=0;
+		
+		for(int j=0;j<4;j++)
+		{
+			if(i<elenenIndis[i])
+			{
+				elenecekIndis = j;
+				break;
+			}
+		}
+		
+		return elenecekIndis;
+	}
+	
 	public boolean hamleYap(String hamleYeri)
 	{
 		boolean durum=false;
 		int konum,satir,sutun,satir2=0,sutun2=0;
-		int silinecekIndis=0;
 		konum = tasYeri2MasaKonumu(hamleYeri);
 		satir = konum/10;
 		sutun = konum%10;
 		satir2 = secilenTasKonum/10;
-		sutun2 = secilenTasKonum%10;;
+		sutun2 = secilenTasKonum%10;
 		//hamle, hamleler listesinde mi kontrol et
 
 		//System.out.println("secilen konum:"+konum+" deger:"+damaMasasi[satir][sutun]+" suan:"+secilenTasKonum+" deger:"+damaMasasi[satir2][sutun2]);
@@ -530,16 +554,12 @@ public class Oyuncu extends dama{
 			damaMasasi[satir2][sutun2] = 0;
 			//hamle yapilirken yenen tas silinir
 			//normal tas veya dama durumuna gore elenecek tas indisi farkli secilir.
-			if(damaMasasi[satir2][sutun2]<10)
-			{
-				silinecekIndis = gecerliHamleIndis;
-			}
 			//System.out.println("silinecek indis"+silinecekIndis+" "+elenenTas[silinecekIndis]);
 
-			if(elenenTas[silinecekIndis]!=-1)
+			if(elenenTas[gecerliHamleIndis]!=-1)
 			{
-				satir2 = elenenTas[silinecekIndis]/10;
-				sutun2 = elenenTas[silinecekIndis]%10;
+				satir2 = elenenTas[gecerliHamleIndis]/10;
+				sutun2 = elenenTas[gecerliHamleIndis]%10;
 				//System.out.println("silinecek indis: "+satir2+" "+sutun2);
 				damaMasasi[satir2][sutun2] = 0;
 			}
