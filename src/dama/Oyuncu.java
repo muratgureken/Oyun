@@ -5,7 +5,7 @@ public class Oyuncu extends dama{
 	public int oyuncuTipi, tasSayisi;
 	private int digerOyuncuTipi, gecerliHamleIndis;
 	private int yeniDamaOldu=0;
-	
+
 	public Oyuncu() {
 		oyuncuTipiSecimi();
 		oyuncuTipi = oyuncuTipiSecimi;
@@ -16,10 +16,12 @@ public class Oyuncu extends dama{
 		//HAMLE FORMATI: SATIR x 10 + SUTUN
 
 		boolean durum=true;
-		int satir, sutun, araDeger;
+		int satir, sutun, araDeger,girdi=0;
 		satir = secilenTasKonum/10;
 		sutun = secilenTasKonum%10;
 
+		System.out.println("secilen tas:"+secilenTasKonum+" deger:"+damaMasasi[satir][sutun]);
+		
 		if((damaMasasi[satir][sutun]%10)!=oyuncuTipi)
 		{
 			durum = false;
@@ -181,6 +183,8 @@ public class Oyuncu extends dama{
 				{
 					zorunluHamleVar = 0;
 				}
+
+				elenecekTasSayisi = hamleSayisi;
 			}
 			//DAMA
 			//komsu sayisi maksimum 14 olabilir, 7 satir 7 sutun hamlesi
@@ -189,9 +193,10 @@ public class Oyuncu extends dama{
 				//UYARI: mutlaka guncelle. Elenen tasi da hesapla.
 				//UYARI: zorunluhamlevar alanini doldurmak gerekiyor.
 				enYakinKendiTasiniBul();
+				girdi = 1;
 			}
 
-			hamleleriIsle();
+			hamleleriIsle(girdi);
 		}
 		return durum;
 	}
@@ -200,21 +205,22 @@ public class Oyuncu extends dama{
 	{
 		// satir veya sutunda sag veya solda kendine en yakin tasini bul.
 		//once sol en yakini bul ,sonra sag en yakini bul sagi 10la carp, ikisini topla.
-		int sonuc=-1, solEnYakin=-1, sagEnYakin=-1,satir,sutun,count, digerOyuncuKonum;
+		int sonuc=-1, solEnYakin=-1, sagEnYakin=-1,satir,sutun,count, count2=0, digerOyuncuKonum;
 		int[] zorunlu=new int[4];
 		int[] damakonumlar=new int[8];
 		int[] kendikonumu=new int[4];
+		int[] indis=new int[8];
 		satir = secilenTasKonum/10;
 		sutun = secilenTasKonum%10;
 
 		zorunluHamleVar = 0;
-		
+
 		//sola bak
 		solEnYakin = -1;
 		sagEnYakin = satir;
 		count=0;
 		digerOyuncuKonum = -1;
-		zorunlu[0]=-1;
+		zorunlu[0]=0;
 		if(satir!=0)
 		{
 			for(int i=satir-1;i>=0;i--)
@@ -243,12 +249,19 @@ public class Oyuncu extends dama{
 				}
 			}
 		}
-		
+
 		damakonumlar[0] = solEnYakin+1;
 		damakonumlar[1] = sagEnYakin;
+		indis[0] = 2;
+		indis[1] = sutun;
 		kendikonumu[0] = satir;
+		if(zorunlu[0]==1)
+		{
+			elenenTas[count2] = digerOyuncuKonum;
+			count2++;
+		}
 		//System.out.println("aralik:"+solEnYakin+" "+sagEnYakin);
-		
+
 		/*for(int i=solEnYakin+1;i<sagEnYakin;i++)
 		{
 			//kendi uzerine hamle yapamaz
@@ -266,7 +279,7 @@ public class Oyuncu extends dama{
 		solEnYakin = satir;
 		count=0;
 		digerOyuncuKonum = -1;
-		zorunlu[1] = -1;
+		zorunlu[1] = 0;
 		if(satir!=7)
 		{
 			for(int i=satir+1;i<=7;i++)
@@ -298,9 +311,17 @@ public class Oyuncu extends dama{
 		}
 
 		//System.out.println("aralik:"+solEnYakin+" "+sagEnYakin);
-		damakonumlar[0] = solEnYakin+1;
-		damakonumlar[1] = sagEnYakin;
+		damakonumlar[2] = solEnYakin+1;
+		damakonumlar[3] = sagEnYakin;
+		indis[2] = 2;
+		indis[3] = sutun;
 		kendikonumu[1] = satir;
+
+		if(zorunlu[1]==1)
+		{
+			elenenTas[count2] = digerOyuncuKonum;
+			count2++;
+		}
 
 		/*for(int i=solEnYakin+1;i<sagEnYakin;i++)
 		{
@@ -313,13 +334,13 @@ public class Oyuncu extends dama{
 		}
 
 		elenenTas[0] = digerOyuncuKonum;	*/		
-		
+
 		//sola bak
 		solEnYakin = -1;
 		sagEnYakin = sutun;
 		count=0;
 		digerOyuncuKonum = -1;
-		zorunlu[2] = -1;
+		zorunlu[2] = 0;
 		if(sutun!=0)
 		{
 			for(int i=sutun-1;i>=0;i--)
@@ -351,10 +372,16 @@ public class Oyuncu extends dama{
 		}
 
 		//System.out.println("aralik:"+solEnYakin+" "+sagEnYakin);
-		damakonumlar[0] = solEnYakin+1;
-		damakonumlar[1] = sagEnYakin;
-		kendikonumu[2] = satir;
-
+		damakonumlar[4] = solEnYakin+1;
+		damakonumlar[5] = sagEnYakin;
+		indis[4] = 1;
+		indis[5] = satir;
+		kendikonumu[2] = sutun;
+		if(zorunlu[2]==1)
+		{
+			elenenTas[count2] = digerOyuncuKonum;
+			count2++;
+		}
 		/*for(int i=solEnYakin+1;i<sagEnYakin;i++)
 		{
 			//kendi uzerine hamle yapamaz
@@ -372,7 +399,7 @@ public class Oyuncu extends dama{
 		solEnYakin = sutun;
 		count=0;
 		digerOyuncuKonum = -1;
-		zorunlu[3] = -1;
+		zorunlu[3] = 0;
 		if(sutun!=7)
 		{
 			for(int i=sutun+1;i<=7;i++)
@@ -402,12 +429,20 @@ public class Oyuncu extends dama{
 				}
 			}
 		}
-		
-		//System.out.println("aralik:"+solEnYakin+" "+sagEnYakin);
-		damakonumlar[0] = solEnYakin+1;
-		damakonumlar[1] = sagEnYakin;
-		kendikonumu[3] = satir;
 
+		//System.out.println("aralik:"+solEnYakin+" "+sagEnYakin);
+		damakonumlar[6] = solEnYakin+1;
+		damakonumlar[7] = sagEnYakin;
+		indis[6] = 1;
+		indis[7] = satir;
+		kendikonumu[3] = sutun;
+		if(zorunlu[3]==1)
+		{
+			elenenTas[count2] = digerOyuncuKonum;
+			count2++;
+		}
+
+		elenecekTasSayisi = count2;
 		/*for(int i=solEnYakin+1;i<sagEnYakin;i++)
 		{
 			//kendi uzerine hamle yapamaz
@@ -419,28 +454,39 @@ public class Oyuncu extends dama{
 		}
 
 		elenenTas[0] = digerOyuncuKonum;	*/		
-		int necizilecek=0;
-		if(zorunluHamleVar==1)
-		{
-			necizilecek = 1;
-		}
-		
+		int satir3,sutun3;
+
 		hamleSayisi = 0;
 		for(int i=0;i<4;i++)
 		{
-			if(zorunlu[i]==necizilecek)
+			if(zorunlu[i]==zorunluHamleVar)
 			{
 				for(int j=damakonumlar[2*i]; j<damakonumlar[2*i+1];j++)
 				{
+					if(indis[2*i]==1)
+					{
+						satir3 = indis[2*i+1];
+						sutun3 = j;
+					}
+					else
+					{
+						satir3 = j;
+						sutun3 = indis[2*i+1];
+					}
+
 					if(j!=kendikonumu[i])
 					{
-						hamleler[hamleSayisi] = satir*10+i;
+						hamleler[hamleSayisi] = satir3*10+sutun3;
+						//System.out.println("HAMLELER:"+hamleler[hamleSayisi]+" konum:"+j+" satir:"+satir3+" sutun:"+sutun3);
 						hamleSayisi++;
 					}
 				}
 			}
+
 		}
-		
+
+		//System.out.println("hamle sayisi:"+hamleSayisi+" elenecek tas sayisi:"+elenecekTasSayisi);
+
 		sonuc = solEnYakin*10+sagEnYakin;
 		return sonuc;
 	}
@@ -473,9 +519,9 @@ public class Oyuncu extends dama{
 		satir2 = secilenTasKonum/10;
 		sutun2 = secilenTasKonum%10;;
 		//hamle, hamleler listesinde mi kontrol et
-		
-		//System.out.println("secilen konum:"+konum+" "+" suan:"+secilenTasKonum);
-		
+
+		//System.out.println("secilen konum:"+konum+" deger:"+damaMasasi[satir][sutun]+" suan:"+secilenTasKonum+" deger:"+damaMasasi[satir2][sutun2]);
+
 		//hamle gecerli ise
 		if(hamleGecerliMi(konum))
 		{
@@ -488,8 +534,8 @@ public class Oyuncu extends dama{
 			{
 				silinecekIndis = gecerliHamleIndis;
 			}
-			System.out.println("silinecek indis"+silinecekIndis+" "+elenenTas[silinecekIndis]);
-			
+			//System.out.println("silinecek indis"+silinecekIndis+" "+elenenTas[silinecekIndis]);
+
 			if(elenenTas[silinecekIndis]!=-1)
 			{
 				satir2 = elenenTas[silinecekIndis]/10;
@@ -517,7 +563,7 @@ public class Oyuncu extends dama{
 		boolean durum=false;
 
 		//System.out.println("tas dama oldu mu? oyuncutipi:"+oyuncuTipi+" secilenkonum:"+secilenTasKonum+ " satir:"+secilenTasKonum/10);
-		
+
 		if(oyuncuTipi==1)
 		{
 			if((secilenTasKonum/10)==7)

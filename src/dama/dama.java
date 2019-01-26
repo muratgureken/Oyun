@@ -4,7 +4,7 @@ public abstract class dama {
 	public static int[][] damaMasasi;
 	public String tasTipi;
 	public static int oyuncuTipiSecimi=0, hamleSayisi, zorunluHamleVar;
-	public static int secilenTasKonum;
+	public static int secilenTasKonum, elenecekTasSayisi;
 	public static int[] hamleler;
 	public static int[] elenenTas;
 
@@ -92,16 +92,19 @@ public abstract class dama {
 		}
 	}
 
-	public void hamleleriIsle()
+	public void hamleleriIsle(int k)
 	{
 		int satir, sutun;
 		//System.out.println("hamle islede hamle sayisi:"+hamleSayisi);
-		for(int i=0;i<hamleSayisi;i++)
+		if((k==0)||(k==1))
 		{
-			//System.out.println("HAMLELER:"+hamleler[i]);
-			satir = hamleler[i]/10;
-			sutun = hamleler[i]%10;
-			damaMasasi[satir][sutun] = 3;
+			for(int i=0;i<hamleSayisi;i++)
+			{
+				//System.out.println("HAMLELER:"+hamleler[i]);
+				satir = hamleler[i]/10;
+				sutun = hamleler[i]%10;
+				damaMasasi[satir][sutun] = 3;
+			}
 		}
 	}
 

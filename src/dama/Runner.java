@@ -15,7 +15,7 @@ public class Runner {
 		dama.secilenTasKonum = -1;
 		dama.damaMasasiCiz();
 
-		System.out.println("baslangic oyuncu tipleri: oyuncu1:"+oyuncu1.oyuncuTipi+ " oyuncu2:"+oyuncu2.oyuncuTipi);
+		//System.out.println("baslangic oyuncu tipleri: oyuncu1:"+oyuncu1.oyuncuTipi+ " oyuncu2:"+oyuncu2.oyuncuTipi);
 		
 		while(oyunDevam)
 		{                
@@ -28,7 +28,7 @@ public class Runner {
 				{
 					tasYeri = scan.next();
 					dama.secilenTasKonum = dama.tasYeri2MasaKonumu(tasYeri);
-					System.out.println("secilen konum:"+dama.secilenTasKonum);
+					//System.out.println("secilen konum:"+dama.secilenTasKonum);
 					tasSecimiDevam = false;
 
 					if(!(oyuncu1.hamleleriHesapla()))
