@@ -201,6 +201,9 @@ public class Oyuncu extends dama{
 		// satir veya sutunda sag veya solda kendine en yakin tasini bul.
 		//once sol en yakini bul ,sonra sag en yakini bul sagi 10la carp, ikisini topla.
 		int sonuc=-1, solEnYakin=-1, sagEnYakin=-1,satir,sutun,count, digerOyuncuKonum;
+		int[] zorunlu=new int[4];
+		int[] damakonumlar=new int[8];
+		int[] kendikonumu=new int[4];
 		satir = secilenTasKonum/10;
 		sutun = secilenTasKonum%10;
 
@@ -211,10 +214,12 @@ public class Oyuncu extends dama{
 		sagEnYakin = satir;
 		count=0;
 		digerOyuncuKonum = -1;
+		zorunlu[0]=-1;
 		if(satir!=0)
 		{
 			for(int i=satir-1;i>=0;i--)
 			{
+				//System.out.println("dama yerlestir1: "+(damaMasasi[i][sutun]%10)+" "+oyuncuTipi+" "+digerOyuncuTipi);
 				//en yakin oldugu yer kendi normal veya dama tasi olabilir, o sebeple mod10 alindi
 				if((damaMasasi[i][sutun]%10)==oyuncuTipi)
 				{
@@ -226,6 +231,7 @@ public class Oyuncu extends dama{
 				{
 					digerOyuncuKonum = i*10+sutun;
 					zorunluHamleVar = 1;
+					zorunlu[0]=1;
 					sagEnYakin = i;
 					count++;
 				}
@@ -237,8 +243,13 @@ public class Oyuncu extends dama{
 				}
 			}
 		}
-
-		for(int i=solEnYakin+1;i<sagEnYakin;i++)
+		
+		damakonumlar[0] = solEnYakin+1;
+		damakonumlar[1] = sagEnYakin;
+		kendikonumu[0] = satir;
+		//System.out.println("aralik:"+solEnYakin+" "+sagEnYakin);
+		
+		/*for(int i=solEnYakin+1;i<sagEnYakin;i++)
 		{
 			//kendi uzerine hamle yapamaz
 			if(i!=satir)
@@ -248,17 +259,20 @@ public class Oyuncu extends dama{
 			}
 		}
 
-		elenenTas[0] = digerOyuncuKonum;			
+		elenenTas[0] = digerOyuncuKonum;	*/		
 
 		//saga bak
 		sagEnYakin = 8;
 		solEnYakin = satir;
 		count=0;
 		digerOyuncuKonum = -1;
+		zorunlu[1] = -1;
 		if(satir!=7)
 		{
 			for(int i=satir+1;i<=7;i++)
 			{
+				//System.out.println("dama yerlestir2: "+(damaMasasi[i][sutun]%10)+" "+oyuncuTipi+" "+digerOyuncuTipi);
+
 				//en yakin oldugu yer kendi normal veya dama tasiolabilir, o sebeple mod10 alindi
 				if((damaMasasi[i][sutun]%10)==oyuncuTipi)
 				{
@@ -270,6 +284,7 @@ public class Oyuncu extends dama{
 				{
 					digerOyuncuKonum = i*10+sutun;
 					zorunluHamleVar = 1;
+					zorunlu[1] = 1;
 					solEnYakin = i;
 					count++;
 				}
@@ -282,7 +297,12 @@ public class Oyuncu extends dama{
 			}
 		}
 
-		for(int i=solEnYakin+1;i<sagEnYakin;i++)
+		//System.out.println("aralik:"+solEnYakin+" "+sagEnYakin);
+		damakonumlar[0] = solEnYakin+1;
+		damakonumlar[1] = sagEnYakin;
+		kendikonumu[1] = satir;
+
+		/*for(int i=solEnYakin+1;i<sagEnYakin;i++)
 		{
 			//kendi uzerine hamle yapamaz
 			if(i!=satir)
@@ -292,17 +312,20 @@ public class Oyuncu extends dama{
 			}
 		}
 
-		elenenTas[0] = digerOyuncuKonum;			
+		elenenTas[0] = digerOyuncuKonum;	*/		
 		
 		//sola bak
 		solEnYakin = -1;
 		sagEnYakin = sutun;
 		count=0;
 		digerOyuncuKonum = -1;
+		zorunlu[2] = -1;
 		if(sutun!=0)
 		{
 			for(int i=sutun-1;i>=0;i--)
 			{
+				//System.out.println("dama yerlestir3: "+(damaMasasi[satir][i]%10)+" "+oyuncuTipi+" "+digerOyuncuTipi);
+
 				//en yakin oldugu yer kendi normal veya dama tasiolabilir, o sebeple mod10 alindi
 				if((damaMasasi[satir][i]%10)==oyuncuTipi)
 				{
@@ -314,6 +337,7 @@ public class Oyuncu extends dama{
 				{
 					digerOyuncuKonum = satir*10+i;
 					zorunluHamleVar = 1;
+					zorunlu[2] = 1;
 					sagEnYakin = i;
 					count++;
 				}
@@ -326,7 +350,12 @@ public class Oyuncu extends dama{
 			}
 		}
 
-		for(int i=solEnYakin+1;i<sagEnYakin;i++)
+		//System.out.println("aralik:"+solEnYakin+" "+sagEnYakin);
+		damakonumlar[0] = solEnYakin+1;
+		damakonumlar[1] = sagEnYakin;
+		kendikonumu[2] = satir;
+
+		/*for(int i=solEnYakin+1;i<sagEnYakin;i++)
 		{
 			//kendi uzerine hamle yapamaz
 			if(i!=sutun)
@@ -336,17 +365,20 @@ public class Oyuncu extends dama{
 			}
 		}
 
-		elenenTas[0] = digerOyuncuKonum;			
+		elenenTas[0] = digerOyuncuKonum;	*/		
 
 		//saga bak
 		sagEnYakin = 8;
 		solEnYakin = sutun;
 		count=0;
 		digerOyuncuKonum = -1;
+		zorunlu[3] = -1;
 		if(sutun!=7)
 		{
 			for(int i=sutun+1;i<=7;i++)
 			{
+				//System.out.println("dama yerlestir4: "+(damaMasasi[satir][i]%10)+" "+oyuncuTipi+" "+digerOyuncuTipi);
+
 				//en yakin oldugu yer kendi normal veya dama tasiolabilir, o sebeple mod10 alindi
 				if((damaMasasi[satir][i]%10)==oyuncuTipi)
 				{
@@ -358,6 +390,7 @@ public class Oyuncu extends dama{
 				{
 					digerOyuncuKonum = satir*10+i;
 					zorunluHamleVar = 1;
+					zorunlu[3] = 1;
 					solEnYakin = i;
 					count++;
 				}
@@ -369,8 +402,13 @@ public class Oyuncu extends dama{
 				}
 			}
 		}
+		
+		//System.out.println("aralik:"+solEnYakin+" "+sagEnYakin);
+		damakonumlar[0] = solEnYakin+1;
+		damakonumlar[1] = sagEnYakin;
+		kendikonumu[3] = satir;
 
-		for(int i=solEnYakin+1;i<sagEnYakin;i++)
+		/*for(int i=solEnYakin+1;i<sagEnYakin;i++)
 		{
 			//kendi uzerine hamle yapamaz
 			if(i!=sutun)
@@ -380,7 +418,28 @@ public class Oyuncu extends dama{
 			}
 		}
 
-		elenenTas[0] = digerOyuncuKonum;			
+		elenenTas[0] = digerOyuncuKonum;	*/		
+		int necizilecek=0;
+		if(zorunluHamleVar==1)
+		{
+			necizilecek = 1;
+		}
+		
+		hamleSayisi = 0;
+		for(int i=0;i<4;i++)
+		{
+			if(zorunlu[i]==necizilecek)
+			{
+				for(int j=damakonumlar[2*i]; j<damakonumlar[2*i+1];j++)
+				{
+					if(j!=kendikonumu[i])
+					{
+						hamleler[hamleSayisi] = satir*10+i;
+						hamleSayisi++;
+					}
+				}
+			}
+		}
 		
 		sonuc = solEnYakin*10+sagEnYakin;
 		return sonuc;
@@ -415,6 +474,8 @@ public class Oyuncu extends dama{
 		sutun2 = secilenTasKonum%10;;
 		//hamle, hamleler listesinde mi kontrol et
 		
+		//System.out.println("secilen konum:"+konum+" "+" suan:"+secilenTasKonum);
+		
 		//hamle gecerli ise
 		if(hamleGecerliMi(konum))
 		{
@@ -427,6 +488,8 @@ public class Oyuncu extends dama{
 			{
 				silinecekIndis = gecerliHamleIndis;
 			}
+			System.out.println("silinecek indis"+silinecekIndis+" "+elenenTas[silinecekIndis]);
+			
 			if(elenenTas[silinecekIndis]!=-1)
 			{
 				satir2 = elenenTas[silinecekIndis]/10;

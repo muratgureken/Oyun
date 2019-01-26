@@ -98,6 +98,7 @@ public abstract class dama {
 		//System.out.println("hamle islede hamle sayisi:"+hamleSayisi);
 		for(int i=0;i<hamleSayisi;i++)
 		{
+			//System.out.println("HAMLELER:"+hamleler[i]);
 			satir = hamleler[i]/10;
 			sutun = hamleler[i]%10;
 			damaMasasi[satir][sutun] = 3;
