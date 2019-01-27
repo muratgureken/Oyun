@@ -3,17 +3,21 @@ package dama;
 public abstract class dama {
 	public static int[][] damaMasasi;
 	public String tasTipi;
-	public static int oyuncuTipiSecimi=0, hamleSayisi, zorunluHamleVar;
-	public static int secilenTasKonum, elenecekTasSayisi;
+	public static int oyuncuTipiSecimi=0, hamleSayisi, zorunluHamleVar, secilmesiZorunluTasSayisi;
+	public static int secilenTasKonum, elenecekTasSayisi, toplamHamleSayisi;
 	public static int[] hamleler;
-	public static int[] elenenTas, elenenIndis;
+	public static int[] elenenTas, elenenIndis, secilenTaslar, tasHamleSayisi, tasZorunluMu;
 
 	static {
 		hamleler = new int[14];
 		elenenTas = new int[4];
 		elenenIndis = new int[4];
 		damaMasasi = new int[8][8];
+		secilenTaslar = new int[16];
+		tasZorunluMu = new int[16];
+		tasHamleSayisi =new int[16];
 		hamleSayisi = 0;
+		secilmesiZorunluTasSayisi = 0;
 		for(int i=0;i<8;i++)
 		{
 			for(int j=0; j<8; j++)
