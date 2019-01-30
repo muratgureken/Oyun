@@ -7,6 +7,7 @@ public class Runner {
 	public static void main(String[] args) {
 		int boy=1;
 		boolean durum=true, oyunDevam=true;
+		String devamSecimi;
 		
 		Scanner scan = new Scanner(System.in);
 		
@@ -51,12 +52,34 @@ public class Runner {
 					System.out.println("Gecersiz bir yon bilgisi girdiniz !...");
 				}
 			}
-			
-			
+				
 			if(yeniOyun.hamleVarmi())
 			{
 				System.out.println("   2048 OYUNU   ");
-				yeniOyun.oyna();
+				if(yeniOyun.oyna())
+				{
+					System.out.println("Tebrikler, kazandiniz !...");
+					durum = true;
+					while(durum)
+					{
+						System.out.println("Tamam ? Devam ? (T/D");
+						devamSecimi = scan.next();
+						if(devamSecimi.equals("T"))
+						{
+							durum = true;
+							oyunDevam = false;
+						}
+						else if(devamSecimi.equals("D"))
+						{
+							durum = false;
+						}
+						else
+						{
+							System.out.println("Yanlis tercih yaptiniz !...");
+							durum = true;
+						}
+					}
+				}
 			}
 			else
 			{

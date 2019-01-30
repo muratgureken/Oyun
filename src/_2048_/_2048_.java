@@ -4,9 +4,10 @@ import java.util.Random;
 
 public class _2048_ {
 	private int boy, tabloBoy, bosElemanSayisi;
-	private int[] tablo;
+	private int[] tablo, kolonKontrol;
 	private int [][] kolon;
 	public String yon;
+	private boolean hareketVar=false;
 
 	public _2048_(int boy) {
 		this.boy = boy;
@@ -14,6 +15,7 @@ public class _2048_ {
 		tablo = new int[tabloBoy];
 		kolon = new int[boy][boy];
 		bosElemanSayisi = tabloBoy;
+		kolonKontrol = new int[boy];
 
 		for(int i=0; i<tabloBoy; i++)
 		{
@@ -23,11 +25,12 @@ public class _2048_ {
 		matrisCiz();
 	}
 
-	public void oyna()
+	public boolean oyna()
 	{
-		int nereye, suAnkiYer;
+		//int nereye, suAnkiYer;
+		boolean ikiBinKirkSekizVar=true;
 
-		if((yon.equals("3"))||(yon.equals("2")))
+		/*if((yon.equals("3"))||(yon.equals("2")))
 		{
 			nereye = boy - 1;
 			suAnkiYer = boy - 1;
@@ -36,23 +39,93 @@ public class _2048_ {
 		{
 			nereye = 0;
 			suAnkiYer = 0; 
-		}
+		}*/
 
 		kolonHesapla();
+		hareketVar = false;
 		for(int i=0; i<boy; i++)
 		{
-			System.out.println("Kolon : "+(i+1));
-			kaydir(i, nereye, suAnkiYer);	
+			kolonKopyala(i);
+			//System.out.println("Kolon : "+(i+1));
+			kaydirHesapla(i);
+			yoneDogruHareketVarmi(i);
+			/*kaydir(i, nereye, suAnkiYer);*/	
 
-			for(int j=0;j<4;j++)
+			/*for(int j=0;j<4;j++)
 			{
 				System.out.print(kolon[i][j]+" ");
 			}
-			System.out.println();
+			System.out.println();*/
 		}
-		tabloYerlestir();
-		rastgeleSayiUret();
-		matrisCiz();
+
+		if(hareketVar)
+		{
+			tabloYerlestir();
+			bosElemanSay();
+			if(!IkiBinKirkSekizVar())
+			{
+				rastgeleSayiUret();
+				ikiBinKirkSekizVar = false;
+			}
+
+			matrisCiz();
+		}
+		else
+		{
+			ikiBinKirkSekizVar = false;
+		}
+		return ikiBinKirkSekizVar;
+	}
+
+	private void kolonKopyala(int kolonInd)
+	{
+		for(int i=0; i<boy; i++)
+		{
+			kolonKontrol[i] = kolon[kolonInd][i];
+		}
+	}
+
+	private void yoneDogruHareketVarmi(int kolonInd)
+	{
+		if(!hareketVar)
+		{
+			for(int i=0; i<boy; i++)
+			{
+				if(kolonKontrol[i]!=kolon[kolonInd][i])
+				{
+					hareketVar = true;
+				}
+			}
+		}
+	}
+
+	private void bosElemanSay()
+	{
+		bosElemanSayisi = 0;
+
+		for(int i=0; i<tabloBoy; i++)
+		{
+			if(tablo[i]==0)
+			{
+				bosElemanSayisi++;
+			}
+		}
+	}
+
+	private boolean IkiBinKirkSekizVar()
+	{
+		boolean durum=false;
+
+		for(int i=0; i<tabloBoy; i++)
+		{
+			if(tablo[i]==2048)
+			{
+				durum = true;
+				break;
+			}
+		}
+
+		return durum;
 	}
 
 	private void tabloYerlestir()
@@ -66,7 +139,7 @@ public class _2048_ {
 				count2 = -1;
 			}
 			count2++;
-			
+
 			if((yon.equals("1"))||(yon.equals("3")))
 			{
 				tablo[i] = kolon[count1][count2];
@@ -103,10 +176,163 @@ public class _2048_ {
 		}
 	}
 
+	private void kaydirHesapla(int kolonInd)
+	{
+		int count, indis, fark;
+		boolean devam=true;
+
+		if((yon.equals("2"))||(yon.equals("3")))
+		{
+			count = boy-1;
+		}
+		else
+		{
+			count = 0;
+		}
+
+		while(devam)
+		{
+			indis = ilkSayiyiBul(count, kolonInd);
+			//System.out.println("ilk sayi: "+indis);
+			if(indis>=0)
+			{
+				fark = count - indis;
+				fark = (fark<0)?(-1*fark):fark;
+				oteleme(fark, count, kolonInd);
+				if((yon.equals("2"))||(yon.equals("3")))
+				{
+					count--;
+				}
+				else
+				{
+					count++;
+				}
+			}
+			else
+			{
+				devam= false;
+			}
+		}
+
+		devam=true;
+		if((yon.equals("2"))||(yon.equals("3")))
+		{
+			count = boy-1;
+		}
+		else
+		{
+			count = 0;
+		}
+
+		while(devam)
+		{
+			if((yon.equals("2"))||(yon.equals("3")))
+			{
+				indis = count - 1;
+			}
+			else
+			{
+				indis = count + 1;
+			}
+
+			if((count!=0 &&(yon.equals("2")||yon.equals(("3"))))||(count!=(boy-1) &&(yon.equals("1")||yon.equals(("5")))))
+			{
+				if(kolon[kolonInd][count]==kolon[kolonInd][indis])
+				{
+					kolon[kolonInd][count] = kolon[kolonInd][count] + kolon[kolonInd][indis];
+					if((yon.equals("2"))||(yon.equals("3")))
+					{
+						count--;
+					}
+					else
+					{
+						count++;
+					}			
+					oteleme(1, indis, kolonInd);
+				}
+				else
+				{
+					if((yon.equals("2"))||(yon.equals("3")))
+					{
+						count--;
+					}
+					else
+					{
+						count++;
+					}					
+				}
+			}
+			else
+			{
+				devam = false;
+			}
+		}
+	}
+
+	private int ilkSayiyiBul(int count, int kolonInd)
+	{
+		int sonuc=-1;
+
+		if((yon.equals("2"))||(yon.equals("3")))
+		{
+			for(int i=count; i>=0; i--)
+			{
+				if(kolon[kolonInd][i]>0)
+				{
+					sonuc = i;
+					break;
+				}
+			}
+		}
+		else
+		{
+			for(int i=count; i<boy; i++)
+			{
+				if(kolon[kolonInd][i]>0)
+				{
+					sonuc = i;
+					break;
+				}
+			}
+		}
+
+		return sonuc;
+	}
+
+	private void oteleme(int fark, int nereye, int kolonInd)
+	{
+		if((yon.equals("2"))||(yon.equals("3")))
+		{
+			for(int i=nereye; i>=fark; i--)
+			{
+				kolon[kolonInd][i] = kolon[kolonInd][i-fark];
+			}
+			for(int i=0; i<fark; i++)
+			{
+				kolon[kolonInd][i] = 0;
+			}
+		}
+		else
+		{
+			for(int i=nereye; i<boy; i++)
+			{
+				if((i+fark)>=boy)
+				{
+					break;
+				}
+				kolon[kolonInd][i] = kolon[kolonInd][i+fark];
+			}
+			for(int i=(boy-1); i>(boy-1-fark); i--)
+			{
+				kolon[kolonInd][i] = 0;
+			}			
+		}
+	}
+
 	private void kaydir(int kolonInd, int nereye, int suAnkiYer)
 	{
 		int indis, indis2;
-		System.out.println("kolon["+kolonInd+"]["+suAnkiYer+"] nereye:"+nereye);
+		//System.out.println("kolon["+kolonInd+"]["+suAnkiYer+"] nereye:"+nereye);
 		if((yon.equals("3"))||(yon.equals("2")))
 		{
 			indis = suAnkiYer - 1;
@@ -280,6 +506,7 @@ public class _2048_ {
 		bosElemanSayisi = bosElemanSayisi - 1;
 		Random rand = new Random();
 		olasilik = rand.nextInt(100);
+		//System.out.println("rastgele: bossayiiii:"+bosElemanSayisi);
 		yer = rand.nextInt(bosElemanSayisi);
 		// yuzde95 olasilikla 2, yuzde5 olasilikla 4 uretilecek.
 		if(olasilik<95)
@@ -287,8 +514,8 @@ public class _2048_ {
 			deger = 2;
 		}
 
-		System.out.println("rastgele: bossayi:"+bosElemanSayisi+" yer:"+yer+" deger:"+deger);
-		
+		//System.out.println("rastgele: bossayi:"+bosElemanSayisi+" yer:"+yer+" deger:"+deger);
+
 		count = -1;
 		for(int i=0;i<tabloBoy; i++)
 		{
