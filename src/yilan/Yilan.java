@@ -2,13 +2,31 @@ package yilan;
 
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-public class Yilan implements AraIslemler{
+public class Yilan extends Thread implements AraIslemler{
 	public int oyunBoyu;
 	LinkedList<Integer> yilan;
 	public int[] yilanMatrisi;
 	public int[] bosSatirSayisi;
 	public int ilkDeger;
+	public String tus="3";
+	public boolean oyunDevam=true;
+	
+	@Override
+	public void run() {
+		while(oyunDevam)
+		{
+			YilanBasiniHesapla();
+			YilaniYerlestir();
+			try {
+				TimeUnit.MILLISECONDS.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	@Override
 	public void YilanIlklendir(int ilkDeger, int baslangicBoy)
@@ -29,7 +47,7 @@ public class Yilan implements AraIslemler{
 		}	
 	}
 	
-	public void YilanBasiniHesapla(String tus)
+	public void YilanBasiniHesapla()
 	{		
 		int yilanBasi = yilan.getLast();
 		
@@ -65,7 +83,7 @@ public class Yilan implements AraIslemler{
 				yilan.add(yilanBasi+1);
 			}
 			break;
-		default:
+		case "5":
 			if(yilanBasi<oyunBoyu)
 			{
 				yilan.add(yilanBasi+oyunBoyu*(oyunBoyu-1));
@@ -75,6 +93,8 @@ public class Yilan implements AraIslemler{
 				yilan.add(yilanBasi-oyunBoyu);
 			}
 			break;	
+		default:
+			break;
 		}
 	}
 
@@ -132,8 +152,10 @@ public class Yilan implements AraIslemler{
 						case "3":
 							System.out.print(" > ");
 							break;
-						default:
+						case "5":
 							System.out.print(" ^ ");
+							break;
+						default:
 							break;
 					}
 				}
@@ -162,9 +184,7 @@ public class Yilan implements AraIslemler{
 	}
 
 	@Override
-	public boolean YilaniYerlestir(String tus) {
-		boolean oyunDevam=true;
-		
+	public boolean YilaniYerlestir() {		
 		//eger yilan bir onceki yilanbasi konumuna geri donmeye calisirsa oyun bitmesin, yilani hareket ettirme,
 		//bir onceki yilan basi konumuna geri dondur.
 		if(yilan.getLast()==yilan.get(yilan.size()-3))
