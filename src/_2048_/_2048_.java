@@ -62,6 +62,7 @@ public class _2048_ {
 		{
 			tabloYerlestir();
 			bosElemanSay();
+			//ONEMLI: ilk kac hamle 2048 kontrolu yapmaya gerek yok bakalim.
 			if(!IkiBinKirkSekizVar())
 			{
 				rastgeleSayiUret();
@@ -94,6 +95,7 @@ public class _2048_ {
 				if(kolonKontrol[i]!=kolon[kolonInd][i])
 				{
 					hareketVar = true;
+					break;
 				}
 			}
 		}
